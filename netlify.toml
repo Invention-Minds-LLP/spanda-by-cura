@@ -1,4 +1,4 @@
-﻿# Netlify build settings for the Angular app.
+# Netlify build settings for the Angular app.
 [build]
   command = "npm run build"
   publish = "dist/spanda/browser"
