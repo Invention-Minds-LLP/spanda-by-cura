@@ -8,5 +8,10 @@ export const routes: Routes = [
     loadComponent: () => import('./opening/opening').then((m) => m.Opening),
     title: 'Spanda By Cura · Opening soon',
   },
+  {
+    path: 'v2',
+    loadComponent: () => import('./v2/v2').then((m) => m.V2),
+    title: 'Spanda By Cura · Centre For Rehabilitation & Recovery',
+  },
   { path: '**', redirectTo: '' },
 ];

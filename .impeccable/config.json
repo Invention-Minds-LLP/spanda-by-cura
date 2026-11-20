@@ -30,6 +30,15 @@
         ],
         "createdAt": "2026-11-20T07:08:31.022Z",
         "reason": "Claude: speciality card images use Angular [src] binding to real files in public/img; verified rendering in screenshots"
+      },
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/app/v2/v2.html"
+        ],
+        "createdAt": "2026-11-20T11:30:47.508Z",
+        "reason": "Claude: speciality images use Angular [src] binding to real files in public/img; verified rendering in screenshots"
       }
     ]
   }

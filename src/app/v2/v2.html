@@ -1,0 +1,275 @@
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="bar" [class.is-scrolled]="scrolled()" [class.is-open]="menuOpen()">
+  <a class="lockup" href="#top" aria-label="SPANDA by Cura, Centre For Rehabilitation & Recovery: home">
+    <img class="lockup-symbol" src="brand/symbol.png" width="1407" height="760" alt="" />
+    <img class="lockup-word" src="brand/wordmark.png" width="906" height="307" alt="" />
+  </a>
+  <button
+    class="menu-btn"
+    type="button"
+    [attr.aria-expanded]="menuOpen()"
+    aria-controls="v2-nav"
+    (click)="menuOpen.set(!menuOpen())"
+  >
+    <app-glyph [name]="menuOpen() ? 'close' : 'menu'" />
+    <span class="visually-hidden">{{ menuOpen() ? 'Close menu' : 'Open menu' }}</span>
+  </button>
+  <nav class="nav" id="v2-nav" aria-label="Main">
+    <a href="#specialities" (click)="menuOpen.set(false)">Specialities</a>
+    <a href="#approach" (click)="menuOpen.set(false)">Our approach</a>
+    <a href="#process" (click)="menuOpen.set(false)">Process</a>
+    <a href="#visit" (click)="menuOpen.set(false)">Patient guide</a>
+    <a class="nav-cta" href="#contact" (click)="menuOpen.set(false)">Request an assessment <app-glyph name="right" /></a>
+  </nav>
+</header>
+
+<main id="main" [class.is-live]="live()">
+  <!-- 1 · Hero: full-bleed living photograph -->
+  <section class="hero" id="top" aria-labelledby="v2-hero-title">
+    <figure class="pulse hero-media" data-pulse="hero">
+      <img
+        src="img/hero.jpg"
+        width="1776"
+        height="1780"
+        alt="Illustrative image: a therapist supporting an older woman through a balance exercise"
+        fetchpriority="high"
+      />
+      <canvas aria-hidden="true"></canvas>
+    </figure>
+    <div class="hero-shade" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <p class="eyebrow light"><span class="beat" aria-hidden="true"></span>Rehabilitation centre · {{ site.locality }}</p>
+      <h1 id="v2-hero-title" class="hero-title">
+        <span class="line"><span>Every step</span></span>
+        <span class="line"><span><em>forward</em></span></span>
+        <span class="line"><span>matters.</span></span>
+      </h1>
+      <div class="hero-foot">
+        <p>Personalised orthopaedic, neurological and pulmonary rehabilitation, shaped around your life.</p>
+        <div class="hero-actions">
+          <a class="pill solid" href="#contact">Request an assessment <app-glyph name="right" /></a>
+          <a class="pill ghost" href="#specialities">Explore specialities</a>
+        </div>
+      </div>
+    </div>
+    <p class="illustrative">Illustrative image, to be replaced with approved photography</p>
+  </section>
+
+  <!-- 2 · The word -->
+  <section class="meaning" aria-labelledby="v2-meaning-title">
+    <div class="wrap meaning-inner">
+      <p class="deva" aria-hidden="true" lang="sa">स्पन्द</p>
+      <div>
+        <h2 id="v2-meaning-title" class="meaning-title">
+          <span class="word-reveal">Spanda</span> <em>(n.)</em>
+        </h2>
+        <p class="meaning-def">
+          From Sanskrit: the first pulse of movement. The small, steady motion from which everything else follows.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · Statement -->
+  <section class="statement" aria-labelledby="v2-statement">
+    <div class="wrap">
+      <p class="eyebrow">About Spanda</p>
+      <h2 id="v2-statement" class="statement-text" data-fill>
+        Rehabilitation, <em>centred</em> around life. Specialised, evidence-informed care with individualised therapy and
+        functional goals that reflect everyday needs.
+      </h2>
+    </div>
+  </section>
+
+  <!-- 4 · Specialities: horizontal journey on desktop -->
+  <section class="specs" id="specialities" aria-labelledby="v2-spec-title">
+    <div class="specs-head wrap">
+      <p class="eyebrow">Our specialities</p>
+      <h2 id="v2-spec-title">Three specialities. <em>One</em> team.</h2>
+      <p class="specs-count"><strong>29</strong> conditions · <strong>5</strong> stages of care</p>
+    </div>
+    <div class="specs-pin">
+      <div class="specs-track">
+        @for (s of specialities; track s.id; let i = $index) {
+          <article class="spec" [class]="'spec tone-' + i" [id]="s.id" [attr.aria-labelledby]="'spec-' + s.id">
+            <figure class="pulse spec-media" data-pulse="spec">
+              <img [src]="s.image" [alt]="s.alt" width="860" height="928" loading="lazy" />
+              <canvas aria-hidden="true"></canvas>
+            </figure>
+            <div class="spec-body">
+              <p class="spec-n" aria-hidden="true">0{{ i + 1 }}</p>
+              <p class="spec-tag">{{ details[s.id].tag }}</p>
+              <h3 [id]="'spec-' + s.id">{{ s.lines[0] }} <em>{{ s.lines[1] }}</em></h3>
+              <p class="spec-sum">{{ s.summary }}</p>
+              <p class="spec-label">{{ details[s.id].conditions.length }} conditions we support</p>
+              <ul class="chips">
+                @for (c of details[s.id].conditions; track c) {
+                  <li>{{ c }}</li>
+                }
+              </ul>
+            </div>
+          </article>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · Recovery is personal: photo opens to full bleed -->
+  <section class="personal" id="approach" aria-labelledby="v2-personal-title">
+    <div class="personal-stage">
+      <figure class="pulse personal-media" data-pulse="care">
+        <img src="img/care.jpg" width="1552" height="1148" alt="Illustrative image: a therapist guiding a hand-grip exercise" loading="lazy" />
+        <canvas aria-hidden="true"></canvas>
+      </figure>
+      <div class="personal-shade" aria-hidden="true"></div>
+      <div class="personal-copy wrap">
+        <p class="eyebrow light">Our approach</p>
+        <h2 id="v2-personal-title">Recovery is <em>personal.</em></h2>
+        <p>
+          Every recovery journey is different. Assessment helps shape therapy around current abilities, individual goals
+          and everyday function.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · Process: stacking cards -->
+  <section class="process" id="process" aria-labelledby="v2-process-title">
+    <div class="wrap process-grid">
+      <div class="process-intro">
+        <p class="eyebrow">How it works</p>
+        <h2 id="v2-process-title">Our rehabilitation <em>process.</em></h2>
+        <p>From initial assessment to continuing recovery, in five clear stages.</p>
+      </div>
+      <ol class="deck">
+        @for (st of stages; track st.title; let i = $index) {
+          <li class="deck-card" [class]="'deck-card tone-' + i" [style.--i]="i">
+            <span class="deck-n" aria-hidden="true">0{{ i + 1 }}</span>
+            <div>
+              <p class="deck-step">Stage {{ i + 1 }} of 5</p>
+              <h3>{{ st.title }}</h3>
+              <p>{{ st.body }}</p>
+            </div>
+          </li>
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- 7 · Patient guide -->
+  <section class="guide" id="visit" aria-label="Questions and visit guide">
+    <div class="wrap guide-grid">
+      <div class="prep">
+        <p class="eyebrow">Patient guide</p>
+        <h2>Preparing for your <em>visit.</em></h2>
+        <ol class="prep-list">
+          @for (v of visit; track v.title; let i = $index) {
+            <li data-rise>
+              <span class="prep-n" aria-hidden="true">{{ i + 1 }}</span>
+              <div>
+                <h3>{{ v.title }}</h3>
+                <p>{{ v.body }}</p>
+              </div>
+            </li>
+          }
+        </ol>
+      </div>
+
+      <div class="faq">
+        <p class="eyebrow">Questions</p>
+        <h2>Frequently <em>asked.</em></h2>
+        <ul class="faq-list">
+          @for (f of faqs; track f.q; let i = $index) {
+            <li class="faq-item" [class.is-open]="openFaq() === i">
+              <h3>
+                <button
+                  type="button"
+                  [id]="'v2-faq-q-' + i"
+                  [attr.aria-expanded]="openFaq() === i"
+                  [attr.aria-controls]="'v2-faq-a-' + i"
+                  (click)="toggleFaq(i)"
+                >
+                  <span>{{ f.q }}</span>
+                  <span class="faq-icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-a" [id]="'v2-faq-a-' + i" role="region" [attr.aria-labelledby]="'v2-faq-q-' + i">
+                <div><p>{{ f.a }}</p></div>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · Closing -->
+  <section class="closing" id="contact" aria-labelledby="v2-contact-title">
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-row">
+        @for (n of [0, 1]; track n) {
+          <span>Orthopaedic <i>·</i> Neurological <i>·</i> Pulmonary <i>·</i> Whitefield, Bengaluru <i>·</i>&nbsp;</span>
+        }
+      </div>
+    </div>
+    <div class="wrap closing-grid">
+      <div>
+        <h2 id="v2-contact-title">Let’s discuss your <em>next step.</em></h2>
+        <p class="closing-lead">
+          Enquire about assessment availability and rehabilitation suitability with our team at {{ site.name }},
+          {{ site.locality }}.
+        </p>
+        @if (site.phoneHref) {
+          <a class="pill solid" [href]="'tel:' + site.phoneHref">Request an assessment <app-glyph name="right" /></a>
+        } @else {
+          <span class="pill solid is-pending" aria-disabled="true">Request an assessment <app-glyph name="right" /></span>
+          <p class="pending-note">Enquiry line opens once contact details are confirmed.</p>
+        }
+      </div>
+      <dl class="contact">
+        <div>
+          <dt>Visit us</dt>
+          <dd>{{ site.name }}<br />{{ site.locality }}, {{ site.region }}</dd>
+        </div>
+        <div>
+          <dt>Call us</dt>
+          <dd>
+            @if (site.phoneHref) {
+              <a [href]="'tel:' + site.phoneHref">{{ site.phoneDisplay }}</a>
+            } @else {
+              To be confirmed
+            }
+          </dd>
+        </div>
+        <div>
+          <dt>Email us</dt>
+          <dd>
+            @if (site.email) {
+              <a [href]="'mailto:' + site.email">{{ site.email }}</a>
+            } @else {
+              To be confirmed
+            }
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <img class="foot-logo" src="brand/spanda-logo.png" alt="SPANDA by Cura, Centre For Rehabilitation & Recovery" width="1333" height="1109" loading="lazy" />
+    <nav class="foot-nav" aria-label="Footer">
+      <a href="#specialities">Specialities</a>
+      <a href="#approach">Our approach</a>
+      <a href="#process">Process</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+  <div class="wrap foot-legal">
+    <p>© {{ year }} {{ site.name }} · {{ site.descriptor }}</p>
+    <p>Clinical information is not a substitute for individual medical advice.</p>
+  </div>
+</footer>
