@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Spanda — Handloom sketch</title>
+<link href="https://fonts.googleapis.com/css2?family=Martel:wght@400;800&family=Mukta:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1440px;height:900px;overflow:hidden}
+  body{font-family:Mukta,sans-serif;background:#1F3347;color:#EDE3D3;position:relative}
+  /* loom: warp threads vertical, weft bands crossing */
+  .warp{position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(237,227,211,.07) 0 2px,transparent 2px 14px)}
+  .weft{position:absolute;left:0;right:0;height:46px;
+        background:repeating-linear-gradient(90deg,var(--c) 0 12px,rgba(0,0,0,.18) 12px 14px)}
+  .w1{--c:#C18C5A;top:520px}
+  .w2{--c:#91A38B;top:578px}
+  .w3{--c:#B4533A;top:636px}
+  .w4{--c:#D9C29A;top:694px}
+  .w5{--c:#5F7F9A;top:752px}
+  .weft span{position:absolute;left:var(--x);top:12px;font:600 14px Mukta;letter-spacing:.14em;text-transform:uppercase;color:#1F3347;
+             background:var(--c);padding:0 10px}
+  .cloth{position:absolute;left:0;right:0;top:810px;bottom:0;
+         background:repeating-linear-gradient(90deg,#C18C5A 0 6px,#91A38B 6px 12px,#B4533A 12px 18px,#D9C29A 18px 24px)}
+  nav{position:absolute;top:0;left:0;right:0;height:88px;display:flex;align-items:center;justify-content:space-between;padding:0 56px}
+  .mark .n{font:800 26px Martel;letter-spacing:.24em}
+  .mark .s{display:block;font-size:12px;letter-spacing:.2em;color:#C9B8A2}
+  nav ul{display:flex;gap:32px;list-style:none;font-size:17px}
+  .hero{position:absolute;left:56px;top:150px;width:860px}
+  .k{font-size:14px;letter-spacing:.3em;text-transform:uppercase;color:#C18C5A;font-weight:600}
+  h1{font:800 68px/1.04 Martel;margin:16px 0 20px;color:#EDE3D3}
+  .hero p{font-size:20px;line-height:1.45;max-width:620px;color:#D8CDBC}
+  .acts{position:absolute;right:56px;top:190px;width:340px;display:flex;flex-direction:column;gap:12px}
+  .btn{font:600 18px Mukta;padding:16px 22px;border-radius:2px;text-align:left}
+  .call{background:#C18C5A;color:#1F3347}
+  .wa{border:1.5px solid #EDE3D3;color:#EDE3D3}
+  .acts small{font-size:14px;color:#C9B8A2}
+</style>
+</head>
+<body>
+  <div class="warp"></div>
+  <nav>
+    <div class="mark"><span class="n">SPANDA</span><span class="s">BY CURA · CENTRE FOR REHABILITATION &amp; RECOVERY</span></div>
+    <ul><li>Care areas</li><li>Residential stay</li><li>Our doctors</li><li>For referrers</li></ul>
+  </nav>
+  <div class="hero">
+    <div class="k">Woven for one person</div>
+    <h1>Every therapy is a thread. Our doctors weave them into your recovery.</h1>
+    <p>Physio, neuro, speech, occupational, child, de-addiction, mental health and Ayurveda, planned together by one specialist-led team. Stay with us or visit daily.</p>
+  </div>
+  <div class="acts">
+    <span class="btn call">Call +91 00000 00000</span>
+    <span class="btn wa">Message on WhatsApp</span>
+    <small>Speak to a care coordinator today</small>
+  </div>
+  <div class="weft w1"><span style="--x:120px">Physical &amp; neuro</span></div>
+  <div class="weft w2"><span style="--x:420px">Speech · occupational · child</span></div>
+  <div class="weft w3"><span style="--x:760px">Addiction &amp; mental health</span></div>
+  <div class="weft w4"><span style="--x:1040px">Ayurveda · yoga</span></div>
+  <div class="weft w5"><span style="--x:260px">Residential care</span></div>
+  <div class="cloth"></div>
+</body>
+</html>

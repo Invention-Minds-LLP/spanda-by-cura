@@ -1,0 +1,178 @@
+:host {
+  display: block;
+}
+
+/* The ground changes colour with every beat. */
+.opening {
+  --ground: var(--slate-deep);
+  --text: var(--white);
+  background: var(--ground);
+  color: var(--text);
+  transition:
+    background-color 700ms var(--ease-out),
+    color 700ms var(--ease-out);
+}
+.opening[data-at='0'] { --ground: var(--slate); --text: var(--white); }
+.opening[data-at='1'] { --ground: var(--eucalyptus); --text: var(--white); }
+.opening[data-at='2'] { --ground: var(--slate-deep); --text: var(--white); }
+.opening[data-at='4'] { --ground: var(--slate); --text: var(--white); }
+.opening[data-at='5'] { --ground: var(--paper); --text: var(--slate); }
+
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: var(--ground);
+  transition: background-color 700ms var(--ease-out);
+}
+.stage canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out);
+}
+.is-live .stage canvas {
+  opacity: 1;
+}
+.opening[data-at='5'] .stage canvas {
+  opacity: 0;
+}
+
+.track {
+  position: relative;
+  z-index: 1;
+}
+.beat {
+  min-height: 100svh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  padding: 12vh var(--gutter);
+  text-align: center;
+}
+.big,
+.word,
+.reveal h2 {
+  font-family: var(--head);
+}
+.big {
+  font-size: clamp(48px, 8.4vw, 150px);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  max-width: 12ch;
+}
+.word {
+  font-size: clamp(72px, 15vw, 260px);
+  font-weight: 700;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+}
+.together {
+  justify-items: start;
+  text-align: left;
+  place-content: center start;
+}
+.together .big {
+  max-width: 8ch;
+}
+.deva {
+  font-family: 'Anek Devanagari Variable', var(--font);
+  font-size: clamp(24px, 2.4vw, 36px);
+  font-weight: 600;
+  color: var(--bronze);
+  margin-bottom: 0.5em;
+  animation: throb 1.6s ease-in-out infinite;
+}
+@keyframes throb {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.12); }
+  30% { transform: scale(1); }
+}
+.first {
+  position: relative;
+}
+.cue {
+  position: absolute;
+  left: 50%;
+  bottom: 5vh;
+  translate: -50% 0;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.cue .glyph {
+  animation: nudge 1.4s var(--ease-spring) infinite;
+}
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+.reveal {
+  min-height: 110svh;
+}
+.reveal-logo {
+  width: auto;
+  height: clamp(170px, 26vh, 260px);
+}
+.reveal h2 {
+  margin-top: clamp(20px, 3vh, 36px);
+  font-size: clamp(56px, 8vw, 140px);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+.pitch {
+  margin-top: 20px;
+  max-width: 54ch;
+  font-size: clamp(17px, 1.25vw, 20px);
+  line-height: 1.5;
+  font-weight: 450;
+  color: var(--ink-soft);
+}
+.reveal .actions {
+  justify-content: center;
+  margin-top: 30px;
+}
+.meaning {
+  margin-top: clamp(32px, 5vh, 56px);
+  max-width: 48ch;
+  font-size: 0.98rem;
+  color: var(--ink-soft);
+}
+.meaning span {
+  margin-inline-end: 0.35em;
+  font-family: 'Anek Devanagari Variable', var(--font);
+  color: var(--bronze-deep);
+  font-weight: 700;
+}
+.meaning em {
+  font-style: normal;
+  font-weight: 700;
+  color: var(--slate);
+}
+
+@media (max-width: 640px) {
+  .together {
+    place-content: start;
+    padding-top: 16vh;
+  }
+  .reveal .actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: min(100%, 360px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deva,
+  .cue .glyph {
+    animation: none;
+  }
+}

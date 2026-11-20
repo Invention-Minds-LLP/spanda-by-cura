@@ -1,0 +1,47 @@
+<div class="opening" [class.is-live]="live()" [attr.data-at]="stage()">
+  <div class="stage" aria-hidden="true">
+    <canvas #canvas></canvas>
+  </div>
+
+  <main class="track">
+    <h1 class="visually-hidden">Spanda By Cura, Centre For Rehabilitation &amp; Recovery: opening soon</h1>
+
+    <section class="beat first" data-stage="-1">
+      <div class="line">
+        <p class="deva" lang="sa">स्पन्द</p>
+        <p class="big">Something is about to move in Whitefield.</p>
+      </div>
+      <p class="cue"><span>Scroll</span><app-glyph name="down" /></p>
+    </section>
+
+    <section class="beat" data-stage="-1">
+      <p class="line big">Rehabilitation, centred around life.</p>
+    </section>
+
+    @for (w of words; track w; let i = $index) {
+      <section class="beat word-beat" [attr.data-stage]="i">
+        <p class="line word">{{ w }}</p>
+      </section>
+    }
+
+    <section class="beat together" data-stage="4">
+      <p class="line big">Every step forward matters.</p>
+    </section>
+
+    <section class="beat reveal" data-stage="5" aria-labelledby="reveal-title">
+      <img class="reveal-logo" data-rise src="brand/spanda-logo.png" width="1333" height="1109" alt="SPANDA by Cura, Centre For Rehabilitation & Recovery" />
+      <h2 id="reveal-title" data-rise>Opening soon.</h2>
+      <p class="pitch" data-rise>
+        Orthopaedic, neurological and pulmonary rehabilitation in Whitefield, Bengaluru, shaped around your abilities,
+        goals and everyday life.
+      </p>
+      <div class="actions" data-rise>
+        <a class="btn bronze" href="/">Explore SPANDA <app-glyph name="right" /></a>
+      </div>
+      <p class="meaning" data-rise>
+        <span lang="sa">स्पन्द</span>&ngsp;<em>spanda</em>: Sanskrit for the first pulse, the subtle throb from which all
+        movement begins.
+      </p>
+    </section>
+  </main>
+</div>

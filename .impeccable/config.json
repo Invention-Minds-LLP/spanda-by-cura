@@ -1,0 +1,36 @@
+{
+  "buildPath": "code",
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "src/styles.css"
+        ],
+        "createdAt": "2026-11-03T08:14:14.803Z",
+        "reason": "Claude: .step-btn riser is the stone-step material and border-radius is 0, so nothing is rounded"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/**"
+        ],
+        "createdAt": "2026-11-03T08:27:44.402Z",
+        "reason": "Claude: unchosen decision-round sketches (Handloom, category standard) used their own candidate fonts by design; not shipped"
+      },
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/app/home/home.html"
+        ],
+        "createdAt": "2026-11-20T07:08:31.022Z",
+        "reason": "Claude: speciality card images use Angular [src] binding to real files in public/img; verified rendering in screenshots"
+      }
+    ]
+  }
+}
