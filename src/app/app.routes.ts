@@ -13,5 +13,10 @@ export const routes: Routes = [
     loadComponent: () => import('./v2/v2').then((m) => m.V2),
     title: 'Spanda By Cura · Centre For Rehabilitation & Recovery',
   },
+  {
+    path: 'v3',
+    loadComponent: () => import('./v3/v3').then((m) => m.V3),
+    title: 'Spanda By Cura · Rehabilitation Centre in Whitefield, Bengaluru',
+  },
   { path: '**', redirectTo: '' },
 ];

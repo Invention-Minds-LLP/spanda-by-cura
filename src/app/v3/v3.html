@@ -1,0 +1,415 @@
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Announcement -->
+<div class="announce">
+  <p><span class="dot" aria-hidden="true"></span> A new rehabilitation centre in {{ site.locality }}.</p>
+  <a href="#callback">Request a callback <app-glyph name="right" /></a>
+</div>
+
+<header class="head" [class.is-scrolled]="scrolled()" [class.is-open]="menuOpen()">
+  <div class="wrap head-inner">
+    <a class="lockup" href="#top" aria-label="SPANDA by Cura, Centre For Rehabilitation & Recovery: home">
+      <img class="lockup-symbol" src="brand/symbol.png" width="1407" height="760" alt="" />
+      <img class="lockup-word" src="brand/wordmark.png" width="906" height="307" alt="" />
+    </a>
+
+    <nav class="nav" id="v3-nav" aria-label="Main">
+      <div class="has-mega" [class.is-open]="megaOpen()">
+        <button type="button" class="nav-link" [attr.aria-expanded]="megaOpen()" aria-controls="v3-mega" (click)="megaOpen.set(!megaOpen())">
+          What we treat <app-glyph name="down" />
+        </button>
+        <div class="mega" id="v3-mega">
+          @for (s of specs; track s.id) {
+            <div class="mega-col">
+              <a class="mega-head" [href]="'#spec-' + s.id" (click)="closeAll()">{{ s.title }}</a>
+              <ul>
+                @for (c of s.conditions.slice(0, 5); track c.name) {
+                  <li><a href="#conditions" (click)="pickTab(s.id); closeAll()">{{ c.name }}</a></li>
+                }
+                <li><a class="mega-more" href="#conditions" (click)="pickTab(s.id); closeAll()">All {{ s.conditions.length }} conditions</a></li>
+              </ul>
+            </div>
+          }
+        </div>
+      </div>
+      <a class="nav-link" href="#approach" (click)="closeAll()">Our approach</a>
+      <a class="nav-link" href="#team" (click)="closeAll()">Team</a>
+      <a class="nav-link" href="#guide" (click)="closeAll()">Patient guide</a>
+      <a class="nav-link" href="#faq" (click)="closeAll()">FAQs</a>
+      <a class="nav-link" href="#contact" (click)="closeAll()">Contact</a>
+    </nav>
+
+    <div class="head-actions">
+      @if (site.phoneHref) {
+        <a class="chip-btn" [href]="'tel:' + site.phoneHref"><app-glyph name="phone" /> {{ site.phoneDisplay }}</a>
+      }
+      <a class="btn-v3 primary" href="#callback" (click)="closeAll()">Enquire now</a>
+      <button class="menu-btn" type="button" [attr.aria-expanded]="menuOpen()" aria-controls="v3-nav" (click)="menuOpen.set(!menuOpen())">
+        <app-glyph [name]="menuOpen() ? 'close' : 'menu'" />
+        <span class="visually-hidden">{{ menuOpen() ? 'Close menu' : 'Open menu' }}</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <!-- Hero -->
+  <section class="hero" id="top" aria-labelledby="v3-hero-title">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="badge"><span class="dot" aria-hidden="true"></span> Orthopaedic · Neurological · Pulmonary</p>
+        <h1 id="v3-hero-title">Every step <em>forward</em> matters.</h1>
+        <p class="hero-lead">
+          Personalised, evidence-informed rehabilitation in {{ site.locality }}. One team plans your care after a careful
+          assessment, around the goals that matter in your everyday life.
+        </p>
+        <div class="hero-actions">
+          <a class="btn-v3 primary lg" href="#callback">Request an assessment <app-glyph name="right" /></a>
+          <a class="btn-v3 outline lg" href="#conditions">Conditions we support</a>
+        </div>
+        <dl class="facts">
+          <div><dt><span class="count" data-count="3">3</span></dt><dd>Specialities</dd></div>
+          <div><dt><span class="count" data-count="29">29</span></dt><dd>Conditions supported</dd></div>
+          <div><dt><span class="count" data-count="5">5</span></dt><dd>Stages of care</dd></div>
+        </dl>
+      </div>
+
+      <div class="hero-visual">
+        <figure class="pulse hero-photo" data-pulse>
+          <img
+            src="img/hero.jpg"
+            width="1776"
+            height="1780"
+            alt="Illustrative image: a therapist supporting an older woman through a balance exercise"
+            fetchpriority="high"
+          />
+          <canvas aria-hidden="true"></canvas>
+        </figure>
+        <p class="float-tag place"><app-glyph name="pin" /> {{ site.locality }}</p>
+        <div class="float-card">
+          <span class="float-icon" aria-hidden="true"><app-glyph name="body" /></span>
+          <div>
+            <strong>An individual plan</strong>
+            <span>shaped after your assessment</span>
+          </div>
+        </div>
+        <p class="illustrative">Illustrative image, to be replaced with approved photography</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Callback -->
+  <section class="callback-wrap" id="callback" aria-labelledby="v3-cb-title">
+    <div class="wrap">
+      <div class="callback" data-rise>
+        <div class="callback-intro">
+          <p class="kicker">Request a callback</p>
+          <h2 id="v3-cb-title">Tell us a little, and our team will call you back.</h2>
+          <p>Share a few details to ask about assessment availability and whether rehabilitation may be suitable.</p>
+        </div>
+
+        @if (sent()) {
+          <div class="sent" role="status">
+            <strong>Thank you. Your request has been received.</strong>
+            <p>The team will contact you on the number you shared.</p>
+          </div>
+        } @else {
+          <form class="cb-form" name="callback" method="POST" data-netlify="true" netlify-honeypot="bot-field" (submit)="submit($event)">
+            <input type="hidden" name="form-name" value="callback" />
+            <p class="visually-hidden"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+            <label class="field">
+              <span>Your name</span>
+              <input name="name" type="text" autocomplete="name" required />
+            </label>
+            <label class="field">
+              <span>Phone number</span>
+              <input name="phone" type="tel" autocomplete="tel" inputmode="tel" pattern="[0-9+ \-]{8,16}" required />
+            </label>
+            <label class="field">
+              <span>Speciality</span>
+              <select name="speciality" required>
+                <option value="" disabled selected>Select one</option>
+                @for (s of specs; track s.id) {
+                  <option [value]="s.title">{{ s.title }}</option>
+                }
+                <option value="Not sure">Not sure yet</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Best time to call</span>
+              <select name="time">
+                <option>Morning</option>
+                <option>Afternoon</option>
+                <option>Evening</option>
+              </select>
+            </label>
+            <label class="consent">
+              <input type="checkbox" name="consent" value="yes" required />
+              <span>I agree to be contacted about this enquiry. Please don’t share medical details here.</span>
+            </label>
+            <button class="btn-v3 primary lg" type="submit" [disabled]="sending()">
+              {{ sending() ? 'Sending…' : 'Request a callback' }} <app-glyph name="right" />
+            </button>
+            @if (error()) {
+              <p class="form-error" role="alert">Something went wrong. Please try again in a moment.</p>
+            }
+          </form>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Specialities -->
+  <section class="block" aria-labelledby="v3-spec-title">
+    <div class="wrap">
+      <header class="block-head center">
+        <p class="kicker">Our specialities</p>
+        <h2 id="v3-spec-title">Specialised rehabilitation, <em>centred around life</em></h2>
+        <p>Three focused specialities, each led by assessment and shaped around individual functional goals.</p>
+      </header>
+      <div class="spec-grid">
+        @for (s of specs; track s.id; let i = $index) {
+          <article class="spec-card" [id]="'spec-' + s.id" data-rise>
+            <div class="spec-photo" data-parallax>
+              <img [src]="s.image" [alt]="'Illustrative image: ' + s.title.toLowerCase()" width="860" height="928" loading="lazy" />
+              <span class="spec-pill">{{ s.conditions.length }} conditions</span>
+            </div>
+            <div class="spec-text">
+              <p class="spec-tag">{{ s.tag }}</p>
+              <h3>{{ s.title }}</h3>
+              <p>{{ s.intro }}</p>
+              <a class="arrow-link" href="#conditions" (click)="pickTab(s.id)">View conditions <app-glyph name="right" /></a>
+            </div>
+          </article>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Conditions -->
+  <section class="block tint" id="conditions" aria-labelledby="v3-cond-title">
+    <div class="wrap">
+      <header class="block-head center">
+        <p class="kicker">Conditions we support</p>
+        <h2 id="v3-cond-title">Care for <em>29 conditions</em> across three specialities</h2>
+        <p>Suitability for every condition depends on medical stability and an individual assessment.</p>
+      </header>
+
+      <div class="tabs" role="tablist" aria-label="Filter conditions by speciality">
+        <button role="tab" type="button" [attr.aria-selected]="tab() === 'all'" (click)="pickTab('all')">All</button>
+        @for (s of specs; track s.id) {
+          <button role="tab" type="button" [attr.aria-selected]="tab() === s.id" (click)="pickTab(s.id)">{{ s.short }}</button>
+        }
+      </div>
+
+      <ul class="cond-grid">
+        @for (c of visibleConditions(); track c.name) {
+          <li class="cond-card">
+            <p class="cond-spec">{{ c.spec }}</p>
+            <h3>{{ c.name }}</h3>
+            <p>{{ c.body }}</p>
+          </li>
+        }
+      </ul>
+      @if (hiddenCount() > 0) {
+        <div class="more-row">
+          <button type="button" class="btn-v3 dark" (click)="showAll.set(true)">See more ({{ hiddenCount() }}) <app-glyph name="down" /></button>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Approach / process -->
+  <section class="block" id="approach" aria-labelledby="v3-proc-title">
+    <div class="wrap">
+      <header class="block-head center">
+        <p class="kicker">Our approach</p>
+        <h2 id="v3-proc-title">Recovery is personal. <em>Your plan should be too.</em></h2>
+        <p>From initial assessment to continuing recovery, in five clear stages.</p>
+      </header>
+      <div class="steps-wrap">
+      <span class="steps-line" aria-hidden="true"><span></span></span>
+      <ol class="steps">
+        @for (st of stages; track st.title; let i = $index) {
+          <li data-rise>
+            <span class="step-n" aria-hidden="true">{{ i + 1 }}</span>
+            <h3>{{ st.title }}</h3>
+            <p>{{ st.body }}</p>
+          </li>
+        }
+      </ol>
+      </div>
+
+      <div class="therapy">
+        <figure class="therapy-photo" data-parallax>
+          <img src="img/care.jpg" width="1552" height="1148" alt="Illustrative image: a therapist guiding a hand-grip exercise" loading="lazy" />
+        </figure>
+        <div class="therapy-copy">
+          <p class="kicker">What therapy may include</p>
+          <h3>Therapy approaches used in each programme</h3>
+          @for (s of specs; track s.id) {
+            <div class="therapy-group">
+              <p class="therapy-head">{{ s.title }}</p>
+              <ul class="chips">
+                @for (a of s.approach; track a) {
+                  <li>{{ a }}</li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team and centre: honest placeholders -->
+  <section class="block tint" id="team" aria-labelledby="v3-team-title">
+    <div class="wrap">
+      <header class="block-head center">
+        <p class="kicker">Our team and centre</p>
+        <h2 id="v3-team-title">Meet the people <em>behind your care</em></h2>
+        <p>Profiles of our clinical team and photographs of the centre will be shared here before opening.</p>
+      </header>
+      <div class="team-grid">
+        @for (r of ['Clinical team', 'Therapy team', 'Care coordination']; track r) {
+          <div class="team-card" data-rise>
+            <div class="team-ph" aria-hidden="true"><img src="brand/symbol.png" alt="" width="1407" height="760" /></div>
+            <p class="team-role">{{ r }}</p>
+            <p class="team-soon">Profile coming soon</p>
+          </div>
+        }
+        <div class="team-card centre" data-rise>
+          <div class="team-ph" aria-hidden="true"><app-glyph name="pin" /></div>
+          <p class="team-role">The centre, {{ site.locality }}</p>
+          <p class="team-soon">Photographs coming soon</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Patient guide + FAQs -->
+  <section class="block" id="guide" aria-labelledby="v3-guide-title">
+    <div class="wrap guide">
+      <div class="guide-card" data-rise>
+        <p class="kicker">Patient guide</p>
+        <h2 id="v3-guide-title">Preparing for your <em>first visit</em></h2>
+        <ul class="ticks">
+          @for (v of visit; track v.title) {
+            <li>
+              <span class="tick" aria-hidden="true"></span>
+              <div>
+                <h3>{{ v.title }}</h3>
+                <p>{{ v.body }}</p>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <div class="faq" id="faq">
+        <p class="kicker">FAQs</p>
+        <h2>Questions families <em>often ask</em></h2>
+        <ul class="faq-list">
+          @for (f of visibleFaqs(); track f.q; let i = $index) {
+            <li class="faq-item" [class.is-open]="openFaq() === i">
+              <h3>
+                <button
+                  type="button"
+                  [id]="'v3-q-' + i"
+                  [attr.aria-expanded]="openFaq() === i"
+                  [attr.aria-controls]="'v3-a-' + i"
+                  (click)="openFaq.set(openFaq() === i ? -1 : i)"
+                >
+                  <span>{{ f.q }}</span>
+                  <span class="faq-icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-a" [id]="'v3-a-' + i" role="region" [attr.aria-labelledby]="'v3-q-' + i">
+                <div><p>{{ f.a }}</p></div>
+              </div>
+            </li>
+          }
+        </ul>
+        @if (!allFaqs()) {
+          <button type="button" class="btn-v3 outline" (click)="allFaqs.set(true)">Show all {{ faqs.length }} questions</button>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="contact" aria-labelledby="v3-cta-title">
+    <div class="wrap cta-inner">
+      <div>
+        <h2 id="v3-cta-title">Let’s discuss your <em>next step.</em></h2>
+        <p>Enquire about assessment availability and rehabilitation suitability with our team in {{ site.locality }}.</p>
+        <div class="cta-actions">
+          <a class="btn-v3 light lg" href="#callback">Request a callback <app-glyph name="right" /></a>
+          @if (whatsapp) {
+            <a class="btn-v3 outline-light lg" [href]="whatsapp" target="_blank" rel="noopener">WhatsApp us</a>
+          }
+        </div>
+      </div>
+      <dl class="cta-contact">
+        <div><dt><app-glyph name="pin" /> Visit us</dt><dd>{{ site.name }}, {{ site.locality }}, {{ site.region }}</dd></div>
+        <div>
+          <dt><app-glyph name="phone" /> Call us</dt>
+          <dd>
+            @if (site.phoneHref) {
+              <a [href]="'tel:' + site.phoneHref">{{ site.phoneDisplay }}</a>
+            } @else {
+              To be confirmed
+            }
+          </dd>
+        </div>
+        <div>
+          <dt><app-glyph name="mail" /> Email us</dt>
+          <dd>
+            @if (site.email) {
+              <a [href]="'mailto:' + site.email">{{ site.email }}</a>
+            } @else {
+              To be confirmed
+            }
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="foot">
+  <div class="wrap foot-grid">
+    <div class="foot-brand">
+      <img src="brand/spanda-logo.png" width="1333" height="1109" alt="SPANDA by Cura, Centre For Rehabilitation & Recovery" loading="lazy" />
+      <p>Personalised orthopaedic, neurological and pulmonary rehabilitation in {{ site.locality }}.</p>
+    </div>
+    @for (s of specs; track s.id) {
+      <div class="foot-col">
+        <p class="foot-head">{{ s.title }}</p>
+        <ul>
+          @for (c of s.conditions; track c.name) {
+            <li><a href="#conditions" (click)="pickTab(s.id)">{{ c.name }}</a></li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+  <div class="wrap foot-legal">
+    <p>© {{ year }} {{ site.name }} · {{ site.descriptor }}</p>
+    <p>Clinical information is not a substitute for individual medical advice.</p>
+  </div>
+</footer>
+
+<!-- Floating actions -->
+<div class="floaters" [class.is-shown]="scrolled()">
+  @if (whatsapp) {
+    <a class="floater wa" [href]="whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp us"><app-glyph name="chat" /></a>
+  }
+  @if (site.phoneHref) {
+    <a class="floater call" [href]="'tel:' + site.phoneHref" aria-label="Call us"><app-glyph name="phone" /></a>
+  }
+  @if (!whatsapp && !site.phoneHref) {
+    <a class="floater cb" href="#callback"><app-glyph name="phone" /> <span>Request a callback</span></a>
+  }
+</div>
