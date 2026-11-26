@@ -1,5 +1,5 @@
 /**
- * Option 3 content, generated from the prototype's services.json (SPANDA_Complete_Developer_Prototype_V2).
+ * Speciality content, generated from the prototype services.json (SPANDA_Complete_Developer_Prototype_V2).
  * Scope: three specialities only. All copy needs clinical and management sign-off before launch.
  */
 
@@ -33,7 +33,7 @@ export const SPECIALITIES_FULL: SpecialityFull[] = [
       "Patient education"
     ],
     "goals": "Support safer movement, manage functional limitations and work towards everyday activities.",
-    "image": "img/orthopaedic-rehabilitation.jpg",
+    "image": "img/stock/knee-physiotherapy.jpg",
     "conditions": [
       {
         "name": "Total knee replacement rehabilitation",
@@ -105,7 +105,7 @@ export const SPECIALITIES_FULL: SpecialityFull[] = [
       "Functional movement and activities-of-daily-living practice"
     ],
     "goals": "Support available functional abilities, mobility and participation in daily life. Progress varies by individual.",
-    "image": "img/neurological-rehabilitation.jpg",
+    "image": "img/stock/balance-training.jpg",
     "conditions": [
       {
         "name": "Stroke rehabilitation",
@@ -178,7 +178,7 @@ export const SPECIALITIES_FULL: SpecialityFull[] = [
       "Respiratory self-management guidance"
     ],
     "goals": "Support breathlessness management, exercise tolerance and everyday function. Rehabilitation does not replace medical respiratory treatment.",
-    "image": "img/pulmonary-rehabilitation.jpg",
+    "image": "img/stock/breathing-exercise.jpg",
     "conditions": [
       {
         "name": "COPD rehabilitation",
@@ -233,3 +233,81 @@ export const SPECIALITIES_FULL: SpecialityFull[] = [
     ]
   }
 ];
+
+/** URL-safe id for a condition, used for in-page anchors. */
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/’/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+export interface Photo {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
+/** Page-level extras for each speciality: imagery, search snippets and plain-language expectations. */
+export const SPECIALITY_PAGES: Record<
+  SpecialityFull['id'],
+  { photo: Photo; seoTitle: string; seoDescription: string; expect: string[] }
+> = {
+  orthopaedic: {
+    photo: {
+      src: 'img/stock/knee-physiotherapy.jpg',
+      alt: 'A physiotherapist guiding a knee strengthening exercise with an ankle weight',
+      width: 1600,
+      height: 1067,
+    },
+    seoTitle: 'Orthopaedic Rehabilitation in Whitefield, Bengaluru | SPANDA',
+    seoDescription:
+      'Orthopaedic rehabilitation in Whitefield after knee or hip replacement, fractures, spine surgery, sports injuries and joint pain. Assessment-led, individual plans.',
+    expect: [
+      'A first assessment of how you move, stand, walk and manage everyday tasks, alongside your surgeon’s or doctor’s instructions.',
+      'Exercises that build strength and joint movement step by step, progressed only as healing and comfort allow.',
+      'Practice with the activities that matter at home, such as getting up from a chair, using stairs or walking further.',
+    ],
+  },
+  neurological: {
+    photo: {
+      src: 'img/stock/balance-training.jpg',
+      alt: 'A person practising standing balance on a wobble board while a therapist stands close by',
+      width: 1280,
+      height: 1600,
+    },
+    seoTitle: 'Neurological Rehabilitation in Bengaluru (Whitefield) | SPANDA',
+    seoDescription:
+      'Neurological rehabilitation in Whitefield, Bengaluru for stroke, brain or spinal cord injury, Parkinson’s, MS and neuropathy. Balance, gait and daily-function support.',
+    expect: [
+      'An assessment of strength, balance, walking and daily activities, planned around medical clearance from your treating team.',
+      'Repeated, task-specific practice, because the brain and body relearn movement through meaningful repetition.',
+      'Guidance for family members and caregivers, so that practice and safety continue at home.',
+    ],
+  },
+  pulmonary: {
+    photo: {
+      src: 'img/stock/breathing-exercise.jpg',
+      alt: 'A man practising a seated breathing exercise with one hand on his chest and one on his abdomen',
+      width: 1600,
+      height: 1067,
+    },
+    seoTitle: 'Pulmonary Rehabilitation in Whitefield, Bengaluru | SPANDA',
+    seoDescription:
+      'Pulmonary rehabilitation in Whitefield for COPD, post-pneumonia and post-ICU recovery, bronchiectasis and ILD. Supervised exercise and breathing-management education.',
+    expect: [
+      'A medical assessment first, to confirm that exercise is suitable and to agree how you will be monitored.',
+      'Supervised exercise that builds endurance gradually, with breathing techniques to help you manage breathlessness.',
+      'Practical strategies for conserving energy and managing your breathing during everyday tasks.',
+    ],
+  },
+};
+
+/** Conditions that have their own detailed guide page. */
+export const CONDITION_GUIDES: Record<string, string> = {
+  'total-knee-replacement-rehabilitation': '/rehabilitation/orthopaedic/knee-replacement',
+};
+
+export const getSpeciality = (id: string) => SPECIALITIES_FULL.find((s) => s.id === id);

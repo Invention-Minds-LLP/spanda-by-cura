@@ -1,0 +1,220 @@
+<!-- Hero -->
+<section class="hero" aria-labelledby="home-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="badge"><span class="dot" aria-hidden="true"></span> Orthopaedic · Neurological · Pulmonary</p>
+      <h1 id="home-title">Every step <em>forward</em> matters.</h1>
+      <p class="hero-lead">
+        Personalised, evidence-informed rehabilitation in {{ site.locality }}. Your plan begins with a careful
+        assessment and is shaped around the goals that matter in your everyday life.
+      </p>
+      <div class="hero-actions">
+        <a class="btn-v3 primary lg" routerLink="/contact">Request an assessment <app-glyph name="right" /></a>
+        <a class="btn-v3 outline lg" routerLink="/" fragment="conditions">Conditions we support</a>
+      </div>
+      <dl class="facts">
+        <div><dt><span class="count" data-count="3">3</span></dt><dd>Specialities</dd></div>
+        <div><dt><span class="count" data-count="29">29</span></dt><dd>Conditions supported</dd></div>
+        <div><dt><span class="count" data-count="5">5</span></dt><dd>Stages of care</dd></div>
+      </dl>
+    </div>
+
+    <div class="hero-visual">
+      <figure class="pulse hero-photo" data-pulse>
+        <img
+          src="img/stock/therapist-guided-exercise.jpg"
+          width="1280"
+          height="1600"
+          alt="A physiotherapist supporting a patient’s leg through a guided stretching exercise"
+          fetchpriority="high"
+        />
+        <canvas aria-hidden="true"></canvas>
+      </figure>
+      <p class="float-tag place"><app-glyph name="pin" /> {{ site.locality }}</p>
+      <div class="float-card">
+        <span class="float-icon" aria-hidden="true"><app-glyph name="body" /></span>
+        <div>
+          <strong>An individual plan</strong>
+          <span>shaped after your assessment</span>
+        </div>
+      </div>
+      <p class="photo-note">Representative stock photograph</p>
+    </div>
+  </div>
+</section>
+
+<!-- Callback -->
+<section class="callback-wrap" id="callback" aria-labelledby="cb-title">
+  <div class="wrap">
+    <div class="callback" data-rise>
+      <div class="callback-intro">
+        <p class="kicker">Request a callback</p>
+        <h2 id="cb-title">Tell us a little, and our team will call you back.</h2>
+        <p>Share a few details to ask about assessment availability and whether rehabilitation may be suitable.</p>
+      </div>
+      <sp-callback-form />
+    </div>
+  </div>
+</section>
+
+<!-- Specialities -->
+<section class="block" aria-labelledby="spec-title">
+  <div class="wrap">
+    <header class="block-head center" data-rise>
+      <p class="kicker">Our specialities</p>
+      <h2 id="spec-title">Specialised rehabilitation, <em>centred around life</em></h2>
+      <p>Three focused specialities, each led by assessment and shaped around individual functional goals.</p>
+    </header>
+    <div class="spec-grid">
+      @for (s of specs; track s.id) {
+        <article class="spec-card" data-rise>
+          <div class="spec-photo" data-parallax>
+            <img [src]="s.image" [alt]="pages[s.id].photo.alt" [width]="pages[s.id].photo.width" [height]="pages[s.id].photo.height" loading="lazy" />
+            <span class="spec-pill">{{ s.conditions.length }} conditions</span>
+          </div>
+          <div class="spec-text">
+            <p class="spec-tag">{{ s.tag }}</p>
+            <h3><a class="stretched" [routerLink]="'/rehabilitation/' + s.id">{{ s.title }}</a></h3>
+            <p>{{ s.intro }}</p>
+            <span class="arrow-link" aria-hidden="true">Explore {{ s.short.toLowerCase() }} rehabilitation <app-glyph name="right" /></span>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Conditions -->
+<section class="block tint" id="conditions" aria-labelledby="cond-title">
+  <div class="wrap">
+    <header class="block-head center" data-rise>
+      <p class="kicker">Conditions we support</p>
+      <h2 id="cond-title">Care for <em>29 conditions</em> across three specialities</h2>
+      <p>Suitability for every condition depends on medical stability and an individual assessment.</p>
+    </header>
+
+    <div class="tabs" role="tablist" aria-label="Filter conditions by speciality">
+      <button role="tab" type="button" [attr.aria-selected]="tab() === 'all'" (click)="pickTab('all')">All</button>
+      @for (s of specs; track s.id) {
+        <button role="tab" type="button" [attr.aria-selected]="tab() === s.id" (click)="pickTab(s.id)">{{ s.short }}</button>
+      }
+    </div>
+
+    <ul class="cond-grid">
+      @for (c of visibleConditions(); track c.name) {
+        <li class="cond-card">
+          <p class="cond-spec">{{ c.spec }}</p>
+          <h3><a class="stretched" [routerLink]="c.link" [fragment]="c.fragment">{{ c.name }}</a></h3>
+          <p>{{ c.body }}</p>
+          @if (c.guide) {
+            <span class="cond-guide">Read the full guide <app-glyph name="right" /></span>
+          }
+        </li>
+      }
+    </ul>
+    @if (hiddenCount() > 0) {
+      <div class="more-row">
+        <button type="button" class="btn-v3 dark" (click)="showAll.set(true)">See more ({{ hiddenCount() }}) <app-glyph name="down" /></button>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- Approach -->
+<section class="block" aria-labelledby="proc-title">
+  <div class="wrap">
+    <header class="block-head center" data-rise>
+      <p class="kicker">Our approach</p>
+      <h2 id="proc-title">Recovery is personal. <em>Your plan should be too.</em></h2>
+      <p>From initial assessment to continuing recovery, in five clear stages.</p>
+    </header>
+    <div class="steps-wrap">
+      <span class="steps-line" aria-hidden="true"><span data-draw></span></span>
+      <ol class="steps">
+        @for (st of stages; track st.title; let i = $index) {
+          <li data-rise>
+            <span class="step-n" aria-hidden="true">{{ i + 1 }}</span>
+            <h3>{{ st.title }}</h3>
+            <p>{{ st.body }}</p>
+          </li>
+        }
+      </ol>
+    </div>
+    <div class="more-row">
+      <a class="btn-v3 outline" routerLink="/our-approach">How each stage works <app-glyph name="right" /></a>
+    </div>
+
+    <div class="therapy">
+      <sp-photo [photo]="therapyPhoto" />
+      <div class="therapy-copy">
+        <p class="kicker">What therapy may include</p>
+        <h3>Therapy approaches used in each programme</h3>
+        @for (s of specs; track s.id) {
+          <div class="therapy-group">
+            <p class="therapy-head">{{ s.title }}</p>
+            <ul class="chips">
+              @for (a of s.approach; track a) {
+                <li>{{ a }}</li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Team and centre: honest placeholders -->
+<section class="block tint" id="team" aria-labelledby="team-title">
+  <div class="wrap">
+    <header class="block-head center" data-rise>
+      <p class="kicker">Our team and centre</p>
+      <h2 id="team-title">Meet the people <em>behind your care</em></h2>
+      <p>Details of our clinical team, with their qualifications and registration numbers, and photographs of the centre will be shared here before opening.</p>
+    </header>
+    <div class="team-grid">
+      @for (r of ['Clinical team', 'Therapy team', 'Care coordination']; track r) {
+        <div class="team-card" data-rise>
+          <div class="team-ph" aria-hidden="true"><img src="brand/symbol.png" alt="" width="1407" height="760" /></div>
+          <p class="team-role">{{ r }}</p>
+          <p class="team-soon">Details coming soon</p>
+        </div>
+      }
+      <div class="team-card" data-rise>
+        <div class="team-ph" aria-hidden="true"><app-glyph name="pin" /></div>
+        <p class="team-role">The centre, {{ site.locality }}</p>
+        <p class="team-soon">Photographs coming soon</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Guide + FAQs -->
+<section class="block" aria-labelledby="guide-title">
+  <div class="wrap guide">
+    <div class="guide-card" data-rise>
+      <p class="kicker">Patient information</p>
+      <h2 id="guide-title">Preparing for your <em>first visit</em></h2>
+      <ul class="ticks">
+        @for (v of visit; track v.title) {
+          <li>
+            <span class="tick" aria-hidden="true"></span>
+            <div>
+              <h3>{{ v.title }}</h3>
+              <p>{{ v.body }}</p>
+            </div>
+          </li>
+        }
+      </ul>
+      <a class="btn-v3 light" routerLink="/patient-information">Full patient information <app-glyph name="right" /></a>
+    </div>
+
+    <div class="faq">
+      <p class="kicker">FAQs</p>
+      <h2>Questions families <em>often ask</em></h2>
+      <sp-faq [items]="faqs" id="home-faq" [limit]="6" />
+    </div>
+  </div>
+</section>
+
+<sp-cta />

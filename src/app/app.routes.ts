@@ -1,22 +1,41 @@
 import { Routes } from '@angular/router';
-import { Home } from './home/home';
+import { SiteLayout } from './site/layout';
 
+/** Canonical public routes follow the developer handoff (section 01). */
 export const routes: Routes = [
-  { path: '', component: Home, title: 'Spanda By Cura · Centre For Rehabilitation & Recovery' },
   {
-    path: 'opening',
-    loadComponent: () => import('./opening/opening').then((m) => m.Opening),
-    title: 'Spanda By Cura · Opening soon',
+    path: '',
+    component: SiteLayout,
+    children: [
+      { path: '', loadComponent: () => import('./pages/home').then((m) => m.HomePage) },
+      { path: 'rehabilitation', loadComponent: () => import('./pages/specialities').then((m) => m.SpecialitiesPage) },
+      {
+        path: 'rehabilitation/orthopaedic/knee-replacement',
+        loadComponent: () => import('./pages/knee-replacement').then((m) => m.KneeReplacementPage),
+      },
+      {
+        path: 'rehabilitation/:slug',
+        loadComponent: () => import('./pages/speciality').then((m) => m.SpecialityPage),
+        canMatch: [
+          (_: unknown, segments: { path: string }[]) =>
+            ['orthopaedic', 'neurological', 'pulmonary'].includes(segments[1]?.path ?? ''),
+        ],
+      },
+      { path: 'about', loadComponent: () => import('./pages/info').then((m) => m.AboutPage) },
+      { path: 'our-approach', loadComponent: () => import('./pages/info').then((m) => m.ApproachPage) },
+      { path: 'patient-information', loadComponent: () => import('./pages/info').then((m) => m.PatientInfoPage) },
+      { path: 'contact', loadComponent: () => import('./pages/info').then((m) => m.ContactPage) },
+      { path: 'privacy', loadComponent: () => import('./pages/info').then((m) => m.PrivacyPage) },
+      { path: 'v3', redirectTo: '', pathMatch: 'full' },
+    ],
   },
+  // Earlier design options, kept for comparison (noindex at build time).
+  { path: 'v1', loadComponent: () => import('./home/home').then((m) => m.Home), title: 'Design option 1 · SPANDA' },
+  { path: 'v2', loadComponent: () => import('./v2/v2').then((m) => m.V2), title: 'Design option 2 · SPANDA' },
+  { path: 'opening', loadComponent: () => import('./opening/opening').then((m) => m.Opening), title: 'SPANDA by Cura · Opening soon' },
   {
-    path: 'v2',
-    loadComponent: () => import('./v2/v2').then((m) => m.V2),
-    title: 'Spanda By Cura · Centre For Rehabilitation & Recovery',
+    path: '**',
+    component: SiteLayout,
+    children: [{ path: '**', loadComponent: () => import('./pages/info').then((m) => m.NotFoundPage) }],
   },
-  {
-    path: 'v3',
-    loadComponent: () => import('./v3/v3').then((m) => m.V3),
-    title: 'Spanda By Cura · Rehabilitation Centre in Whitefield, Bengaluru',
-  },
-  { path: '**', redirectTo: '' },
 ];

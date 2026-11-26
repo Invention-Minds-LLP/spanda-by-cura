@@ -3,6 +3,8 @@
 @import '@fontsource-variable/anek-devanagari/standard.css';
 @import '@fontsource-variable/fraunces/wght.css';
 @import '@fontsource-variable/fraunces/wght-italic.css';
+@import './site-styles/base.css';
+@import './site-styles/pages.css';
 
 /* Brand tokens, from the developer handoff (section 03). */
 :root {

@@ -1,0 +1,102 @@
+<div class="sp">
+  <a class="skip" href="#main" (click)="skip($event)">Skip to content</a>
+
+  <div class="announce">
+    <p><span class="dot" aria-hidden="true"></span> A new rehabilitation centre in {{ site.locality }}.</p>
+    <a routerLink="/contact">Request a callback <app-glyph name="right" /></a>
+  </div>
+
+  <header class="head" [class.is-scrolled]="scrolled()" [class.is-open]="menuOpen()">
+    <div class="wrap head-inner">
+      <a class="lockup" routerLink="/" aria-label="SPANDA by Cura, Centre For Rehabilitation & Recovery: home">
+        <img class="lockup-symbol" src="brand/symbol.png" width="1407" height="760" alt="" />
+        <img class="lockup-word" src="brand/wordmark.png" width="906" height="307" alt="" />
+      </a>
+
+      <nav class="nav" id="site-nav" aria-label="Main">
+        <div class="has-mega" [class.is-open]="megaOpen()">
+          <button type="button" class="nav-link" [attr.aria-expanded]="megaOpen()" aria-controls="site-mega" (click)="megaOpen.set(!megaOpen())">
+            What we treat <app-glyph name="down" />
+          </button>
+          <div class="mega" id="site-mega">
+            @for (s of specs; track s.id) {
+              <div class="mega-col">
+                <a class="mega-head" [routerLink]="'/rehabilitation/' + s.id">{{ s.title }}</a>
+                <ul>
+                  @for (c of s.conditions.slice(0, 5); track c.name) {
+                    @let t = conditionLink(s.id, c.name);
+                    <li><a [routerLink]="t.link" [fragment]="t.fragment">{{ c.name }}</a></li>
+                  }
+                  <li><a class="mega-more" [routerLink]="'/rehabilitation/' + s.id" fragment="conditions">All {{ s.conditions.length }} conditions</a></li>
+                </ul>
+              </div>
+            }
+            <a class="mega-all" routerLink="/rehabilitation">View all specialities <app-glyph name="right" /></a>
+          </div>
+        </div>
+        <a class="nav-link" routerLink="/about" routerLinkActive="is-active">About</a>
+        <a class="nav-link" routerLink="/our-approach" routerLinkActive="is-active">Our approach</a>
+        <a class="nav-link" routerLink="/patient-information" routerLinkActive="is-active">Patient information</a>
+        <a class="nav-link" routerLink="/contact" routerLinkActive="is-active">Contact</a>
+      </nav>
+
+      <div class="head-actions">
+        @if (site.phoneHref) {
+          <a class="chip-btn" [href]="'tel:' + site.phoneHref"><app-glyph name="phone" /> {{ site.phoneDisplay }}</a>
+        }
+        <a class="btn-v3 primary" routerLink="/contact">Enquire now</a>
+        <button class="menu-btn" type="button" [attr.aria-expanded]="menuOpen()" aria-controls="site-nav" (click)="menuOpen.set(!menuOpen())">
+          <app-glyph [name]="menuOpen() ? 'close' : 'menu'" />
+          <span class="visually-hidden">{{ menuOpen() ? 'Close menu' : 'Open menu' }}</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <router-outlet />
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot-grid">
+      <div class="foot-brand">
+        <img src="brand/spanda-logo.png" width="1333" height="1109" alt="SPANDA by Cura, Centre For Rehabilitation & Recovery" loading="lazy" />
+        <p>Personalised orthopaedic, neurological and pulmonary rehabilitation in {{ site.locality }}.</p>
+        <ul class="foot-links">
+          <li><a routerLink="/about">About SPANDA</a></li>
+          <li><a routerLink="/our-approach">Our approach</a></li>
+          <li><a routerLink="/patient-information">Patient information</a></li>
+          <li><a routerLink="/contact">Contact</a></li>
+          <li><a routerLink="/privacy">Privacy</a></li>
+        </ul>
+      </div>
+      @for (s of specs; track s.id) {
+        <div class="foot-col">
+          <p class="foot-head"><a [routerLink]="'/rehabilitation/' + s.id">{{ s.title }}</a></p>
+          <ul>
+            @for (c of s.conditions; track c.name) {
+              @let t = conditionLink(s.id, c.name);
+              <li><a [routerLink]="t.link" [fragment]="t.fragment">{{ c.name }}</a></li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+    <div class="wrap foot-legal">
+      <p>© {{ year }} {{ site.name }} · {{ site.descriptor }}</p>
+      <p>Clinical information on this website is general and is not a substitute for individual medical advice.</p>
+    </div>
+  </footer>
+
+  <div class="floaters" [class.is-shown]="scrolled()">
+    @if (whatsapp) {
+      <a class="floater wa" [href]="whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp us (opens WhatsApp)"><app-glyph name="chat" /></a>
+    }
+    @if (site.phoneHref) {
+      <a class="floater call" [href]="'tel:' + site.phoneHref" aria-label="Call us"><app-glyph name="phone" /></a>
+    }
+    @if (!whatsapp && !site.phoneHref) {
+      <a class="floater cb" routerLink="/contact"><app-glyph name="phone" /> <span>Request a callback</span></a>
+    }
+  </div>
+</div>

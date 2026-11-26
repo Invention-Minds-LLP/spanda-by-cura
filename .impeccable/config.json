@@ -48,6 +48,15 @@
         ],
         "createdAt": "2026-11-20T12:33:23.472Z",
         "reason": "Claude: speciality images use Angular [src] binding to real files in public/img; verified rendering in screenshots"
+      },
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/app/pages/home.html"
+        ],
+        "createdAt": "2026-11-26T08:20:55.671Z",
+        "reason": "Claude: speciality images use Angular [src] binding to real files in public/img/stock; verified rendering in screenshots"
       }
     ]
   }
