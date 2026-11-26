@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  ElementRef,
   PLATFORM_ID,
   afterNextRender,
   computed,
@@ -37,9 +38,10 @@ export interface CarouselItem {
     role: 'region',
     'aria-roledescription': 'carousel',
     '[attr.aria-label]': 'label()',
-    '(mouseenter)': 'paused.set(true)',
-    '(mouseleave)': 'paused.set(false)',
-    '(focusin)': 'paused.set(true)',
+    // Only a real mouse hovering, or keyboard focus, holds autoplay (touch would never "leave").
+    '(pointerenter)': 'hover($event, true)',
+    '(pointerleave)': 'hover($event, false)',
+    '(focusin)': 'focusIn($event)',
     '(focusout)': 'paused.set(false)',
     '(keydown.arrowleft)': 'go(-1)',
     '(keydown.arrowright)': 'go(1)',
@@ -47,6 +49,8 @@ export interface CarouselItem {
   template: `
     <div
       class="cf-stage"
+      (touchstart)="touchStart($event)"
+      (touchend)="touchEnd($event)"
       (pointerdown)="down($event)"
       (pointerup)="up($event)"
       (pointercancel)="startX = null"
@@ -76,16 +80,16 @@ export interface CarouselItem {
               <span class="cf-more">Read the guide <app-glyph name="right" /></span>
             </div>
             @if (o !== 0) {
-              <button type="button" class="cf-hit" tabindex="-1" aria-hidden="true" (click)="index.set(i)"></button>
+              <button type="button" class="cf-hit" tabindex="-1" aria-hidden="true" (click)="index.set(i); nudge()"></button>
             }
           </li>
         }
       </ul>
     </div>
     <div class="cf-controls">
-      <button type="button" class="cf-btn" (click)="go(-1)" aria-label="Previous"><app-glyph name="right" class="flip" /></button>
+      <button type="button" class="cf-btn" (click)="go(-1, true)" aria-label="Previous"><app-glyph name="right" class="flip" /></button>
       <p class="cf-count" aria-live="polite">{{ index() + 1 }} / {{ items().length }}</p>
-      <button type="button" class="cf-btn" (click)="go(1)" aria-label="Next"><app-glyph name="right" /></button>
+      <button type="button" class="cf-btn" (click)="go(1, true)" aria-label="Next"><app-glyph name="right" /></button>
     </div>
   `,
 })
@@ -96,6 +100,12 @@ export class Carousel {
   protected readonly index = signal(0);
   protected readonly paused = signal(false);
   protected startX: number | null = null;
+  private touchX: number | null = null;
+  private touchY = 0;
+  /** After a touch or button press, autoplay rests briefly and then resumes by itself. */
+  private restUntil = 0;
+  private swiped = false;
+  private readonly host = inject(ElementRef);
   private readonly narrow = signal(false);
   private readonly reduced = signal(false);
 
@@ -121,8 +131,19 @@ export class Carousel {
       sync();
       mq.addEventListener('change', sync);
       const timer = setInterval(() => {
-        if (!this.paused() && !this.reduced() && document.visibilityState === 'visible') this.go(1);
+        if (!this.paused() && !this.reduced() && Date.now() > this.restUntil && document.visibilityState === 'visible') this.go(1);
       }, 4200);
+      // A swipe must not also open the card underneath the finger.
+      const host = this.host.nativeElement as HTMLElement;
+      const guard = (e: Event) => {
+        if (this.swiped) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          this.swiped = false;
+        }
+      };
+      host.addEventListener('click', guard, true);
+      destroy.onDestroy(() => host.removeEventListener('click', guard, true));
       destroy.onDestroy(() => {
         clearInterval(timer);
         mq.removeEventListener('change', sync);
@@ -151,19 +172,58 @@ export class Carousel {
     };
   });
 
-  protected go(step: number): void {
+  protected go(step: number, byUser = false): void {
     const n = this.items().length;
     if (n) this.index.update((i) => (i + step + n) % n);
+    if (byUser) this.nudge();
   }
 
+  protected nudge(): void {
+    this.restUntil = Date.now() + 6000;
+  }
+
+  protected hover(e: PointerEvent, inside: boolean): void {
+    if (e.pointerType === 'mouse') this.paused.set(inside);
+  }
+
+  protected focusIn(e: FocusEvent): void {
+    // Pause only for keyboard focus; a tap also focuses buttons but must not stop autoplay for good.
+    if ((e.target as Element).matches?.(':focus-visible')) this.paused.set(true);
+  }
+
+  protected touchStart(e: TouchEvent): void {
+    const t = e.touches[0];
+    this.touchX = t.clientX;
+    this.touchY = t.clientY;
+    this.nudge();
+  }
+
+  protected touchEnd(e: TouchEvent): void {
+    if (this.touchX === null) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - this.touchX;
+    const dy = t.clientY - this.touchY;
+    this.touchX = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      this.swiped = true;
+      setTimeout(() => (this.swiped = false), 400);
+      this.go(dx < 0 ? 1 : -1, true);
+    }
+  }
+
+  /** Mouse and pen drag (touch is handled by the touch events above). */
   protected down(e: PointerEvent): void {
-    this.startX = e.clientX;
+    if (e.pointerType !== 'touch') this.startX = e.clientX;
   }
 
   protected up(e: PointerEvent): void {
-    if (this.startX === null) return;
+    if (this.startX === null || e.pointerType === 'touch') return;
     const dx = e.clientX - this.startX;
     this.startX = null;
-    if (Math.abs(dx) > 40) this.go(dx < 0 ? 1 : -1);
+    if (Math.abs(dx) > 40) {
+      this.swiped = true;
+      setTimeout(() => (this.swiped = false), 400);
+      this.go(dx < 0 ? 1 : -1, true);
+    }
   }
 }

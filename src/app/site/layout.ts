@@ -14,11 +14,12 @@ import { GUIDE_LINKS } from './content/guides';
 import { SITE, whatsappLink } from '../site.config';
 import { SPECIALITIES_FULL, slugify } from './content/specialities';
 import { Tracking } from './tracking';
+import { Chatbot } from './chatbot';
 
 /** Shared shell for every public page: announcement, header with mega menu, footer, floating actions. */
 @Component({
   selector: 'sp-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, Glyph],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, Glyph, Chatbot],
   templateUrl: './layout.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

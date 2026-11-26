@@ -93,7 +93,7 @@ export class HomePage {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const { gsap } = await import('gsap');
 
-    gsap.from(root.querySelectorAll('.hero-copy > *'), { y: 30, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.08 });
+    gsap.from(root.querySelectorAll('.hero-text > *, .facts'), { y: 30, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.08 });
     gsap.from(root.querySelectorAll('.float-card, .float-tag'), { y: 30, opacity: 0, duration: 1, ease: 'back.out(1.6)', stagger: 0.15, delay: 0.6 });
     root.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => {
       const to = Number(el.dataset['count']);
