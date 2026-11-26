@@ -334,6 +334,9 @@
   .ticks.dark p {
     color: var(--ink-soft);
     margin: 0;
+    line-height: 1.6;
+    /* First line centred on the 28px tick. */
+    padding-top: calc((28px - 1.6em) / 2);
   }
   .ticks.dark li {
     align-items: start;
@@ -609,15 +612,16 @@
     border-radius: 14px;
     background: var(--card);
     font-weight: 500;
+    line-height: 1.6;
   }
+  /* Tick centred on the first line of text (14px padding + half a 1.6 line), not the middle of the card. */
   .check-list li::before {
     content: '';
     position: absolute;
     left: 18px;
-    top: 50%;
+    top: calc(14px + 0.8em - 9px);
     width: 18px;
     height: 18px;
-    margin-top: -9px;
     border-radius: 50%;
     background: var(--sage);
   }
@@ -625,10 +629,9 @@
     content: '';
     position: absolute;
     left: 24px;
-    top: 50%;
+    top: calc(14px + 0.8em - 7px);
     width: 5px;
     height: 9px;
-    margin-top: -7px;
     border: solid var(--white);
     border-width: 0 2px 2px 0;
     rotate: 45deg;
@@ -807,12 +810,21 @@
   .num-list li {
     display: grid;
     grid-template-columns: 40px 1fr;
-    gap: 14px;
+    gap: 16px;
     align-items: start;
   }
+  /* First line of text centred on the 40px number circle. */
   .num-list p {
+    margin: 0;
     color: var(--ink-soft);
-    padding-top: 6px;
+    line-height: 1.55;
+    padding-top: calc((40px - 1.55em) / 2);
+  }
+  /* A plain column beside a dark card starts at the card's inner padding, so the headings line up. */
+  @media (min-width: 900px) {
+    .two-col > .guide-card + div {
+      padding-top: clamp(28px, 3.4vw, 44px);
+    }
   }
   .step-n.sm {
     width: 40px;
@@ -1689,5 +1701,65 @@
 @media (prefers-reduced-motion: reduce) {
   .sp .cb-panel {
     animation: none;
+  }
+}
+
+/* ── Brand story video (home + about) ── */
+.sp {
+  .brand-story {
+    display: block;
+  }
+  .bs-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 520px) 1fr;
+    gap: clamp(32px, 6vw, 96px);
+    align-items: center;
+  }
+  .bs-video {
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 28px;
+    /* Matches the video's own background so the edges disappear. */
+    background: #f8f7f2;
+    aspect-ratio: 10 / 9;
+    box-shadow: 0 30px 70px -45px rgb(34 54 63 / 0.55);
+  }
+  .bs-video video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .bs-text h2 {
+    font-size: clamp(30px, 3vw, 44px);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .bs-text > p:not(.kicker):not(.deva) {
+    max-width: 52ch;
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+  }
+  .bs-text .btn-v3 {
+    margin-top: 28px;
+  }
+  .deva.sm {
+    font-size: clamp(44px, 5vw, 68px);
+    margin-bottom: 10px;
+  }
+  .brand-story.dark .bs-text > p:not(.kicker):not(.deva) {
+    color: rgb(255 255 255 / 0.82);
+  }
+  .brand-story.dark em {
+    color: var(--bronze);
+  }
+  .brand-story.dark .bs-video {
+    box-shadow: 0 30px 70px -40px rgb(0 0 0 / 0.6);
+  }
+  @media (max-width: 899px) {
+    .bs-grid {
+      grid-template-columns: 1fr;
+    }
   }
 }

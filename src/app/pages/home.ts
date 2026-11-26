@@ -19,13 +19,14 @@ import { photoForGuide } from '../site/content/guides/photos';
 import { SPECIALITIES_FULL, SPECIALITY_PAGES, SpecialityFull } from '../site/content/specialities';
 import { Motion } from '../site/motion';
 import { Seo } from '../site/seo';
+import { BrandStory } from '../site/brand-story';
 import { Cta, Faq, PhotoFrame } from '../site/ui';
 
 type Tab = 'all' | SpecialityFull['id'];
 
 @Component({
   selector: 'sp-home',
-  imports: [RouterLink, Glyph, CallbackForm, Carousel, Faq, Cta, PhotoFrame],
+  imports: [RouterLink, Glyph, CallbackForm, Carousel, Faq, Cta, PhotoFrame, BrandStory],
   templateUrl: './home.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

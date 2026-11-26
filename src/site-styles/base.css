@@ -607,11 +607,23 @@
     color: var(--slate);
     transition: border-color 200ms var(--ease-out), background-color 200ms var(--ease-out);
   }
+  /* One consistent arrow on every browser (Android and iOS otherwise push their own into the corner). */
+  .field select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 48px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%232b4451' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    background-size: 14px;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  }
   .field input:focus,
   .field select:focus {
     outline: none;
     border-color: var(--eucalyptus);
-    background: var(--white);
+    background-color: var(--white);
   }
   .consent {
     grid-column: 1 / -1;
@@ -1054,13 +1066,15 @@
   }
   .ticks li {
     display: grid;
-    grid-template-columns: 30px 1fr;
-    gap: 14px;
+    grid-template-columns: 28px 1fr;
+    gap: 16px;
+    align-items: start;
   }
   .tick {
     position: relative;
     width: 28px;
     height: 28px;
+    margin-top: 0;
     border-radius: 50%;
     background: var(--sage);
   }
@@ -1079,7 +1093,12 @@
     font-family: var(--body);
     font-weight: 700;
     font-size: 1.02rem;
+    /* Same height as the tick, so the tick sits centred on the first line. */
+    line-height: 28px;
     letter-spacing: 0;
+  }
+  .guide-card > .btn-v3 {
+    margin-top: 32px;
   }
   .ticks p {
     margin-top: 4px;

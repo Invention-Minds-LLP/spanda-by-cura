@@ -5,6 +5,7 @@ import { SITE } from '../site.config';
 import { CallbackForm } from '../site/callback-form';
 import { ABOUT, APPROACH, PATIENT_INFO, PRIVACY } from '../site/content/pages';
 import { SPECIALITIES_FULL } from '../site/content/specialities';
+import { BrandStory } from '../site/brand-story';
 import { Motion } from '../site/motion';
 import { Crumb, Seo } from '../site/seo';
 import { Crumbs, Cta, Faq, PhotoFrame } from '../site/ui';
@@ -22,7 +23,7 @@ const home: Crumb = { label: 'Home', link: '/' };
 /* ───────────────────────── About ───────────────────────── */
 @Component({
   selector: 'sp-about',
-  imports: [RouterLink, Glyph, Crumbs, Cta, PhotoFrame],
+  imports: [RouterLink, Glyph, Crumbs, Cta, PhotoFrame, BrandStory],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="page-hero with-photo">
@@ -59,13 +60,11 @@ const home: Crumb = { label: 'Home', link: '/' };
     </section>
 
     <section class="name-band" aria-labelledby="name-h">
-      <div class="wrap name-inner">
-        <p class="deva" lang="sa" aria-hidden="true">{{ a.name.word }}</p>
-        <div>
-          <h2 id="name-h">Why <em>Spanda?</em></h2>
-          <p>{{ a.name.text }}</p>
-        </div>
-      </div>
+      <sp-brand-story tone="dark">
+        <p class="deva sm" lang="sa" aria-hidden="true">{{ a.name.word }}</p>
+        <h2 id="name-h">Why <em>Spanda?</em></h2>
+        <p>{{ a.name.text }}</p>
+      </sp-brand-story>
     </section>
 
     <section class="block">
