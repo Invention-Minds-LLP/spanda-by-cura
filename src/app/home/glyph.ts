@@ -14,7 +14,9 @@ export type GlyphName =
   | 'pin'
   | 'mail'
   | 'menu'
-  | 'close';
+  | 'close'
+  | 'whatsapp'
+  | 'callback';
 
 /** One stroke family for every icon on the site: 24 grid, 1.75 stroke, round joins. */
 @Component({
@@ -78,6 +80,14 @@ export type GlyphName =
         }
         @case ('close') {
           <path d="M6 6l12 12M18 6L6 18" />
+        }
+        @case ('whatsapp') {
+          <path d="M3.6 20.4l1.3-4.3a8.6 8.6 0 1 1 3.1 3.1z" />
+          <path d="M9 8.2c-.3.9.1 2.4 1.5 3.9s3 2 3.9 1.6l.8-1.1-1.7-1-.8.6a4.4 4.4 0 0 1-2-2l.6-.8-1-1.7z" />
+        }
+        @case ('callback') {
+          <path d="M5.2 3.5h3.3l1.6 4.1-2.1 1.4a11.5 11.5 0 0 0 7 7l1.4-2.1 4.1 1.6v3.3a2 2 0 0 1-2.1 2A16.6 16.6 0 0 1 3.2 5.6a2 2 0 0 1 2-2.1z" />
+          <path d="M14.5 3.5v5h5M14.5 8.5l6-6" />
         }
       }
     </svg>

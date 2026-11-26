@@ -30,8 +30,7 @@ export class SiteLayout {
   protected readonly whatsapp = whatsappLink('Hello SPANDA, I would like to enquire about a rehabilitation assessment.');
   protected readonly menuOpen = signal(false);
   protected readonly megaOpen = signal(false);
-  protected readonly scrolled = signal(false);
-  protected readonly tracking = inject(Tracking);
+  protected readonly scrolled = signal(false);  protected readonly tracking = inject(Tracking);
 
   constructor() {
     const router = inject(Router);
@@ -73,8 +72,7 @@ export class SiteLayout {
 
   protected closeAll(): void {
     this.menuOpen.set(false);
-    this.megaOpen.set(false);
-  }
+    this.megaOpen.set(false);  }
 
   /** Link target for a condition: its own guide if one exists, otherwise its section on the speciality page. */
   protected conditionLink(specId: string, name: string): { link: string; fragment?: string } {

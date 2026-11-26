@@ -15,6 +15,7 @@ import { SITE, whatsappLink } from '../site.config';
 import { GUIDES, guidePath } from './content/guides';
 import { PATIENT_INFO } from './content/pages';
 import { SPECIALITIES_FULL } from './content/specialities';
+import { CallbackForm } from './callback-form';
 import { Tracking } from './tracking';
 
 interface Link {
@@ -34,6 +35,8 @@ interface Msg {
   list?: string[];
   links?: Link[];
   urgent?: boolean;
+  /** Show the callback form in this message; the value is the enquiry topic ('' for general). */
+  form?: string;
 }
 
 /** Everyday words people use, mapped to each guide (in addition to the guide's own name). */
@@ -84,7 +87,7 @@ const words = (t: string) =>
  */
 @Component({
   selector: 'sp-chatbot',
-  imports: [RouterLink, Glyph],
+  imports: [RouterLink, Glyph, CallbackForm],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'chatbot', '(keydown.escape)': 'open.set(false)' },
   template: `
@@ -113,12 +116,19 @@ const words = (t: string) =>
               @if (m.links) {
                 <div class="cb-links">
                   @for (l of m.links; track l.label) {
-                    @if (l.link.startsWith('http') || l.link.startsWith('tel:')) {
+                    @if (l.link.startsWith('form:')) {
+                      <button type="button" (click)="showForm(l.link.slice(5))">{{ l.label }}</button>
+                    } @else if (l.link.startsWith('http') || l.link.startsWith('tel:')) {
                       <a [href]="l.link" target="_blank" rel="noopener">{{ l.label }}</a>
                     } @else {
                       <a [routerLink]="l.link" [fragment]="l.fragment" (click)="open.set(false)">{{ l.label }}</a>
                     }
                   }
+                </div>
+              }
+              @if (m.form !== undefined) {
+                <div class="cb-formcard">
+                  <sp-callback-form [compact]="true" [topic]="m.form || 'Assistant callback request'" label="Request a callback" />
                 </div>
               }
             </div>
@@ -135,20 +145,13 @@ const words = (t: string) =>
           <input #q id="cb-q" name="q" type="text" autocomplete="off" maxlength="200" placeholder="e.g. rehab after knee replacement" />
           <button type="submit" aria-label="Send"><app-glyph name="right" /></button>
         </form>
-        <p class="cb-fine">Please don’t share personal or medical details here. In an emergency, call 112.</p>
+        <p class="cb-fine">Please don’t share medical details here. In an emergency, call 112.</p>
       </section>
     }
-    <button type="button" class="cb-launch" [class.is-open]="open()" (click)="toggle()" [attr.aria-expanded]="open()" aria-label="Chat with the SPANDA assistant">
-      @if (open()) {
-        <app-glyph name="close" />
-      } @else {
-        <app-glyph name="chat" /> <span>Ask us</span>
-      }
-    </button>
   `,
 })
 export class Chatbot {
-  protected readonly open = signal(false);
+  readonly open = signal(false);
   protected readonly messages = signal<Msg[]>([]);
   protected readonly chips = ['Conditions you support', 'Book an assessment', 'What should I bring?', 'Where are you?', 'Fees and insurance'];
   private readonly log = viewChild<ElementRef<HTMLElement>>('log');
@@ -168,7 +171,8 @@ export class Chatbot {
     ...GUIDES.flatMap((g) => g.faqs.map((f) => ({ ...f, guide: g }))),
   ] as FaqEntry[]).map((f) => ({ f, terms: new Set(words(f.q)) }));
 
-  protected toggle(): void {
+  /** Opened and closed from the side "Ask us" tab. */
+  toggle(focusInput = true): void {
     this.open.update((v) => !v);
     if (this.open()) {
       if (!this.messages().length) {
@@ -180,8 +184,26 @@ export class Chatbot {
         ]);
       }
       this.tracking.event('chat_open');
-      setTimeout(() => this.q()?.nativeElement.focus(), 50);
+      if (focusInput) setTimeout(() => this.q()?.nativeElement.focus(), 50);
     }
+  }
+
+  /** Open the assistant straight at the callback form (used by the side "Request a callback" tab). */
+  openCallback(): void {
+    if (!this.open()) this.toggle(false);
+    this.showForm('');
+  }
+
+  protected showForm(topic: string): void {
+    this.messages.update((m) => [
+      ...m,
+      {
+        from: 'bot',
+        text: 'Please share your name and mobile number, and our team will call you back. Please do not include medical details here.',
+        form: topic,
+      },
+    ]);
+    if (this.browser) setTimeout(() => this.log()?.nativeElement.scrollTo({ top: 1e6, behavior: 'smooth' }), 30);
   }
 
   protected send(e: Event): void {
@@ -199,7 +221,7 @@ export class Chatbot {
   }
 
   private callback(topic?: string): Link {
-    return { label: topic ? `Request a callback about ${topic}` : 'Request a callback', link: '/contact' };
+    return { label: topic ? `Request a callback about ${topic}` : 'Request a callback', link: 'form:' + (topic ?? '') };
   }
 
   private contactLinks(): Link[] {
@@ -241,8 +263,9 @@ export class Chatbot {
     if (/\b(book\w*|appointments?|assessment|call ?back|consult\w*|enquir\w*|visit you|register)\b/.test(t)) {
       return {
         from: 'bot',
-        text: 'You can request an assessment by sharing your name and phone number, and our team will call you back about availability and suitability.',
-        links: this.contactLinks(),
+        text: 'You can request an assessment by sharing your name and mobile number below. Our team will call you back about availability and suitability. Please do not include medical details here.',
+        links: this.contactLinks().slice(1).length ? this.contactLinks().slice(1) : undefined,
+        form: '',
       };
     }
     if (/\b(bring|prepare|first visit|documents|reports|what to wear)\b/.test(t)) {

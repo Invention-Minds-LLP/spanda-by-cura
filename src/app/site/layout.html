@@ -88,17 +88,6 @@
     </div>
   </footer>
 
-  <!-- Mobile action bar: the enquiry routes always within one tap (call and WhatsApp appear once verified). -->
-  <nav class="action-bar" aria-label="Quick actions">
-    @if (site.phoneHref) {
-      <a [href]="'tel:' + site.phoneHref"><app-glyph name="phone" /> Call</a>
-    }
-    @if (whatsapp) {
-      <a [href]="whatsapp" target="_blank" rel="noopener"><app-glyph name="chat" /> WhatsApp</a>
-    }
-    <a class="primary" routerLink="/contact"><app-glyph name="right" /> Request a callback</a>
-  </nav>
-
   @if (tracking.enabled && tracking.consent() === null) {
     <div class="consent-bar" role="dialog" aria-live="polite" aria-label="Cookie choices">
       <p>
@@ -112,17 +101,21 @@
     </div>
   }
 
-  <sp-chatbot />
+  <sp-chatbot #bot />
 
-  <div class="floaters" [class.is-shown]="scrolled()">
+  <!-- Quick actions docked to the right edge. Call and WhatsApp appear once the numbers are verified in site.config.ts. -->
+  <nav class="side-tabs" [class.is-hidden]="bot.open()" aria-label="Quick actions">
+    <button type="button" class="side-tab cb" (click)="bot.openCallback()">
+      <app-glyph name="callback" /><span>Request a callback</span>
+    </button>
+    <button type="button" class="side-tab chat" [attr.aria-expanded]="bot.open()" (click)="bot.toggle()">
+      <app-glyph name="chat" /><span>Ask us</span>
+    </button>
     @if (whatsapp) {
-      <a class="floater wa" [href]="whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp us (opens WhatsApp)"><app-glyph name="chat" /></a>
+      <a class="side-tab wa" [href]="whatsapp" target="_blank" rel="noopener"><app-glyph name="whatsapp" /><span>WhatsApp us</span></a>
     }
     @if (site.phoneHref) {
-      <a class="floater call" [href]="'tel:' + site.phoneHref" aria-label="Call us"><app-glyph name="phone" /></a>
+      <a class="side-tab call" [href]="'tel:' + site.phoneHref"><app-glyph name="phone" /><span>Call {{ site.phoneDisplay }}</span></a>
     }
-    @if (!whatsapp && !site.phoneHref) {
-      <a class="floater cb" routerLink="/contact"><app-glyph name="phone" /> <span>Request a callback</span></a>
-    }
-  </div>
+  </nav>
 </div>

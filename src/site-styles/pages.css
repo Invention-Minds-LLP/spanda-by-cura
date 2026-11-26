@@ -1226,10 +1226,6 @@
     color: var(--slate);
   }
 
-  .action-bar {
-    display: none;
-  }
-
   .consent-bar {
     position: fixed;
     left: 16px;
@@ -1267,53 +1263,9 @@
     }
   }
 
-  /* On phones a fixed bar replaces the floating button. */
   @media (max-width: 700px) {
-    .floaters {
-      display: none;
-    }
-    .action-bar {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 45;
-      display: flex;
-      gap: 8px;
-      padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
-      background: rgb(250 246 239 / 0.96);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 -10px 30px -20px rgb(34 54 63 / 0.5);
-    }
-    .action-bar a {
-      flex: 1;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 48px;
-      border-radius: 999px;
-      border: 1.5px solid rgb(43 68 81 / 0.2);
-      font-weight: 700;
-      font-size: 0.92rem;
-      color: var(--slate);
-      text-decoration: none;
-    }
-    .action-bar a.primary {
-      flex: 1.6;
-      border-color: var(--accent);
-      background: var(--accent);
-      color: var(--white);
-    }
-    .action-bar .glyph {
-      width: 1.1em;
-      height: 1.1em;
-    }
     .foot {
-      padding-bottom: 90px;
-    }
-    .consent-bar {
-      bottom: 80px;
+      padding-bottom: 24px;
     }
   }
 }
@@ -1461,46 +1413,10 @@
 
 /* ───────── SPANDA assistant (chatbot) ───────── */
 .sp {
-  .floaters {
-    bottom: 92px;
-  }
-  .cb-launch {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 55;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    min-width: 56px;
-    height: 56px;
-    padding: 0 20px;
-    border: 0;
-    border-radius: 999px;
-    background: var(--slate);
-    color: var(--white);
-    font: 700 0.95rem/1 var(--body);
-    box-shadow: 0 18px 40px -16px rgb(34 54 63 / 0.7);
-    cursor: pointer;
-    transition: background-color 220ms var(--ease-out), transform 220ms var(--ease-out);
-  }
-  .cb-launch:hover {
-    background: var(--eucalyptus);
-    transform: translateY(-2px);
-  }
-  .cb-launch.is-open {
-    padding: 0;
-    width: 56px;
-  }
-  .cb-launch .glyph {
-    width: 22px;
-    height: 22px;
-  }
   .cb-panel {
     position: fixed;
     right: 20px;
-    bottom: 88px;
+    bottom: 20px;
     z-index: 56;
     display: flex;
     flex-direction: column;
@@ -1665,22 +1581,12 @@
   }
 
   @media (max-width: 700px) {
-    .cb-launch {
-      right: 12px;
-      bottom: calc(80px + env(safe-area-inset-bottom));
-      height: 50px;
-      min-width: 50px;
-      padding: 0 16px;
-    }
-    .cb-launch.is-open {
-      width: 50px;
-    }
     .cb-panel {
       right: 8px;
       left: 8px;
       width: auto;
-      bottom: calc(140px + env(safe-area-inset-bottom));
-      height: min(560px, calc(100svh - 170px));
+      bottom: calc(10px + env(safe-area-inset-bottom));
+      height: min(620px, calc(100svh - 90px));
     }
     .cb-input input {
       font-size: 16px; /* prevents iOS zoom on focus */
@@ -1761,5 +1667,149 @@
     .bs-grid {
       grid-template-columns: 1fr;
     }
+  }
+}
+
+/* ── Quick actions docked to the right edge (callback, WhatsApp, call, emergency) ── */
+.sp {
+  .side-tabs {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    z-index: 50;
+    display: grid;
+    justify-items: end;
+    gap: 8px;
+    translate: 0 -50%;
+  }
+  .side-tab {
+    display: inline-flex;
+    align-items: center;
+    height: 56px;
+    padding: 0 17px;
+    border: 0;
+    border-radius: 16px 0 0 16px;
+    color: var(--white);
+    font: 700 0.92rem/1 var(--body);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    box-shadow: 0 14px 30px -14px rgb(34 54 63 / 0.7);
+  }
+  .side-tab .glyph {
+    width: 22px;
+    height: 22px;
+  }
+  /* The label slides out on hover or keyboard focus (desktop). */
+  .side-tab span {
+    max-width: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-width 320ms var(--ease-out), opacity 220ms var(--ease-out), margin 320ms var(--ease-out);
+  }
+  .side-tab:hover span,
+  .side-tab:focus-visible span {
+    max-width: 220px;
+    margin-left: 10px;
+    opacity: 1;
+  }
+  .side-tab.cb {
+    background: var(--accent);
+  }
+  .side-tab.wa {
+    background: #1f8a4c;
+  }
+  .side-tab.call {
+    background: var(--slate);
+  }
+  .side-tab.chat {
+    background: var(--slate);
+  }
+  .side-tab:focus-visible {
+    outline: 3px solid var(--slate);
+    outline-offset: 2px;
+  }
+
+  /* Callback form inside the assistant */
+  .cb-formcard {
+    margin-top: 10px;
+    padding: 14px;
+    border-radius: 14px;
+    background: var(--white);
+  }
+  .cb-formcard .cb-form {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .cb-formcard .field input {
+    min-height: 44px;
+    font-size: 16px;
+  }
+  .cb-formcard .consent {
+    font-size: 0.75rem;
+  }
+  .cb-formcard .btn-v3 {
+    width: 100%;
+    justify-content: center;
+  }
+  .cb-formcard .sent strong {
+    display: block;
+  }
+  .cb-links button {
+    font: inherit;
+    cursor: pointer;
+  }
+
+  @media (max-width: 700px) {
+    .side-tabs {
+      top: auto;
+      bottom: calc(80px + env(safe-area-inset-bottom));
+      gap: 6px;
+      translate: none;
+    }
+    .side-tab {
+      height: 46px;
+      padding: 0 12px;
+      border-radius: 14px 0 0 14px;
+    }
+    .side-tab .glyph {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  /* Team photos: on phones the label sits under the photo instead of covering it. */
+  @media (max-width: 600px) {
+    .team-photo {
+      overflow: visible;
+      aspect-ratio: auto;
+      background: none;
+    }
+    .team-photo img {
+      aspect-ratio: 4 / 3.4;
+      border-radius: 14px;
+    }
+    .team-note {
+      position: static;
+      display: block;
+      margin-top: 6px;
+      padding: 0;
+      background: none;
+      border-radius: 0;
+      font-size: 0.66rem;
+      font-weight: 500;
+      text-align: left;
+      color: var(--ink-soft);
+    }
+  }
+}
+.sp {
+  .side-tabs {
+    transition: opacity 200ms var(--ease-out), visibility 0s;
+  }
+  .side-tabs.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 200ms var(--ease-out), visibility 0s 200ms;
   }
 }
