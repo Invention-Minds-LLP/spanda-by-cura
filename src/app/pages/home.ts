@@ -43,6 +43,17 @@ export class HomePage {
     height: 1005,
   };
 
+  /**
+   * Team and centre cards. Stock photographs are clearly labelled so they are not mistaken for SPANDA's own staff or
+   * premises (NMC notice 06/10/2026, clauses 7.2 and 9.2); replace with real, consented photographs before opening.
+   */
+  protected readonly team = [
+    { role: 'Clinical team', soon: 'Details coming soon', note: 'Representative stock photograph', src: 'img/m/team-clinical.jpg', pos: '62% 50%', w: 1400, h: 788, alt: 'A doctor in conversation with a patient who uses a wheelchair' },
+    { role: 'Therapy team', soon: 'Details coming soon', note: 'Representative stock photograph', src: 'img/m/band-exercise.jpg', pos: '50% 50%', w: 1800, h: 1005, alt: 'A physiotherapist guiding a senior man through a resistance band exercise' },
+    { role: 'Care coordination', soon: 'Details coming soon', note: 'Representative stock photograph', src: 'img/m/team-coordination.jpg', pos: '50% 40%', w: 1400, h: 800, alt: 'A clinician explaining a report on a tablet to an older woman' },
+    { role: 'The centre, Whitefield, Bengaluru', soon: 'Photographs coming soon', note: 'Representative image, not the SPANDA centre', src: 'img/m/centre-rehab-room.jpg', pos: '50% 50%', w: 1400, h: 933, alt: 'A bright rehabilitation room with parallel bars and exercise equipment' },
+  ];
+
   protected readonly tab = signal<Tab>('all');
 
   /** Every condition guide as a carousel card, filtered by the speciality tab. */

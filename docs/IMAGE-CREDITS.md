@@ -18,6 +18,9 @@ not AI-generated. They show models, not SPANDA patients or staff, and are labell
 | shoulder-exercise.jpg | 428470905 | Physical therapist assisting elderly woman with shoulder exercise in clinic |
 | leg-exercise.jpg | 27999040 | Physiotherapy doctor assisting elderly patient with leg exercise in clinic |
 | mat-exercise.jpg | 40474668 | Doctor helping patient during rehabilitation |
+| team-clinical.jpg | 416754830 | Indian general practitioner greeting wheelchair user patient |
+| team-coordination.jpg | 428500529 | Indian female doctor explaining medical report on tablet to elderly patient |
+| centre-rehab-room.jpg | 330199166 | Rehabilitation room with parallel bars and equipment (labelled “not the SPANDA centre”) |
 
 Photo options shared with the centre: `docs/SPANDA-photo-options.jpg`.
 

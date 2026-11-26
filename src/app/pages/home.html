@@ -156,18 +156,16 @@
       <p>Details of our clinical team, with their qualifications and registration numbers, and photographs of the centre will be shared here before opening.</p>
     </header>
     <div class="team-grid">
-      @for (r of ['Clinical team', 'Therapy team', 'Care coordination']; track r) {
+      @for (t of team; track t.role) {
         <div class="team-card" data-rise>
-          <div class="team-ph" aria-hidden="true"><img src="brand/symbol.png" alt="" width="1407" height="760" /></div>
-          <p class="team-role">{{ r }}</p>
-          <p class="team-soon">Details coming soon</p>
+          <div class="team-photo">
+            <img [src]="t.src" [alt]="t.alt" [width]="t.w" [height]="t.h" [style.object-position]="t.pos" loading="lazy" />
+            <span class="team-note">{{ t.note }}</span>
+          </div>
+          <p class="team-role">{{ t.role }}</p>
+          <p class="team-soon">{{ t.soon }}</p>
         </div>
       }
-      <div class="team-card" data-rise>
-        <div class="team-ph" aria-hidden="true"><app-glyph name="pin" /></div>
-        <p class="team-role">The centre, {{ site.locality }}</p>
-        <p class="team-soon">Photographs coming soon</p>
-      </div>
     </div>
   </div>
 </section>
