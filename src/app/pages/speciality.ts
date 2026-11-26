@@ -19,13 +19,14 @@ import {
   getSpeciality,
   slugify,
 } from '../site/content/specialities';
+import { CallbackForm } from '../site/callback-form';
 import { Motion } from '../site/motion';
 import { Seo } from '../site/seo';
 import { Crumbs, Cta, Faq, PhotoFrame } from '../site/ui';
 
 @Component({
   selector: 'sp-speciality',
-  imports: [RouterLink, Glyph, Crumbs, Cta, Faq, PhotoFrame],
+  imports: [RouterLink, Glyph, Crumbs, Cta, Faq, PhotoFrame, CallbackForm],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @let s = spec();
@@ -101,6 +102,17 @@ import { Crumbs, Cta, Faq, PhotoFrame } from '../site/ui';
         </div>
       </div>
     </section>
+
+    <div class="wrap">
+          <section class="quick-cb" aria-labelledby="qcb-h" data-rise>
+            <div>
+              <p class="kicker">Ask our team</p>
+              <h2 id="qcb-h">Request a callback about {{ s.title.toLowerCase() }}</h2>
+              <p>Share your name and number, and our team will call you about assessment availability and suitability.</p>
+            </div>
+            <sp-callback-form [compact]="true" [topic]="s.title" label="Call me back" />
+          </section>
+    </div>
 
     <section class="block" aria-labelledby="faq-h">
       <div class="wrap faq-wrap">

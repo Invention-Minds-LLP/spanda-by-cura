@@ -88,6 +88,30 @@
     </div>
   </footer>
 
+  <!-- Mobile action bar: the enquiry routes always within one tap (call and WhatsApp appear once verified). -->
+  <nav class="action-bar" aria-label="Quick actions">
+    @if (site.phoneHref) {
+      <a [href]="'tel:' + site.phoneHref"><app-glyph name="phone" /> Call</a>
+    }
+    @if (whatsapp) {
+      <a [href]="whatsapp" target="_blank" rel="noopener"><app-glyph name="chat" /> WhatsApp</a>
+    }
+    <a class="primary" routerLink="/contact"><app-glyph name="right" /> Request a callback</a>
+  </nav>
+
+  @if (tracking.enabled && tracking.consent() === null) {
+    <div class="consent-bar" role="dialog" aria-live="polite" aria-label="Cookie choices">
+      <p>
+        We use cookies to understand how this website is used and to measure our advertising. We never use your
+        health information for advertising. <a routerLink="/privacy">Privacy information</a>
+      </p>
+      <div class="consent-actions">
+        <button type="button" class="btn-v3 outline" (click)="tracking.choose('denied')">Only essential</button>
+        <button type="button" class="btn-v3 primary" (click)="tracking.choose('granted')">Accept</button>
+      </div>
+    </div>
+  }
+
   <div class="floaters" [class.is-shown]="scrolled()">
     @if (whatsapp) {
       <a class="floater wa" [href]="whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp us (opens WhatsApp)"><app-glyph name="chat" /></a>

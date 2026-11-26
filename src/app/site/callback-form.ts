@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { Tracking } from './tracking';
 import { Glyph } from '../home/glyph';
 import { SPECIALITIES_FULL } from './content/specialities';
 
@@ -18,8 +19,9 @@ import { SPECIALITIES_FULL } from './content/specialities';
         <p>The team will contact you on the number you shared.</p>
       </div>
     } @else {
-      <form class="cb-form" name="callback" method="POST" data-netlify="true" netlify-honeypot="bot-field" (submit)="submit($event)">
+      <form class="cb-form" [class.compact]="compact()" name="callback" method="POST" data-netlify="true" netlify-honeypot="bot-field" (submit)="submit($event)">
         <input type="hidden" name="form-name" value="callback" />
+        <input type="hidden" name="page" [value]="page()" />
         <p class="visually-hidden"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
         <label class="field">
           <span>Your name</span>
@@ -29,6 +31,9 @@ import { SPECIALITIES_FULL } from './content/specialities';
           <span>Phone number</span>
           <input name="phone" type="tel" autocomplete="tel" inputmode="tel" pattern="[0-9+ \\-]{8,16}" required />
         </label>
+        @if (topic()) {
+          <input type="hidden" name="speciality" [value]="topic()" />
+        } @else {
         <label class="field">
           <span>Enquiry about</span>
           <select name="speciality" required>
@@ -40,14 +45,17 @@ import { SPECIALITIES_FULL } from './content/specialities';
             <option value="Visit information">Visit information</option>
           </select>
         </label>
-        <label class="field">
-          <span>Best time to call</span>
-          <select name="time">
-            <option>Morning</option>
-            <option>Afternoon</option>
-            <option>Evening</option>
-          </select>
-        </label>
+        }
+        @if (!compact()) {
+          <label class="field">
+            <span>Best time to call</span>
+            <select name="time">
+              <option>Morning</option>
+              <option>Afternoon</option>
+              <option>Evening</option>
+            </select>
+          </label>
+        }
         <label class="consent">
           <input type="checkbox" name="consent" value="yes" required />
           <span>
@@ -67,6 +75,15 @@ import { SPECIALITIES_FULL } from './content/specialities';
 })
 export class CallbackForm {
   readonly label = input('Request a callback');
+  /** Name + phone only (for inline forms on guide and speciality pages). */
+  readonly compact = input(false);
+  /** Pre-filled enquiry topic, e.g. the condition of the current page. */
+  readonly topic = input('');
+  private readonly router = inject(Router);
+  private readonly tracking = inject(Tracking);
+  protected page(): string {
+    return this.router.url.split('#')[0];
+  }
   protected readonly specs = SPECIALITIES_FULL;
   protected readonly sending = signal(false);
   protected readonly sent = signal(false);
@@ -87,6 +104,9 @@ export class CallbackForm {
       });
       if (!res.ok) throw new Error(String(res.status));
       this.sent.set(true);
+      // Conversion event for GTM (Google Ads / GA4). Deliberately carries no personal or health information:
+      // no name, phone, condition or page path (which would reveal the condition).
+      this.tracking.event('generate_lead', { form: this.compact() ? 'inline_callback' : 'callback' });
     } catch {
       this.error.set(true);
     } finally {

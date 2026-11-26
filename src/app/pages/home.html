@@ -22,10 +22,10 @@
     <div class="hero-visual">
       <figure class="hero-photo">
         <img
-          src="img/stock/therapist-guided-exercise.jpg"
-          width="1280"
-          height="1600"
-          alt="A physiotherapist supporting a patient’s leg through a guided stretching exercise"
+          src="img/m/hero-walking-therapist.jpg"
+          width="1800"
+          height="1005"
+          alt="A woman walking between parallel bars with her physiotherapist beside her"
           fetchpriority="high"
         />
       </figure>
@@ -99,23 +99,7 @@
       }
     </div>
 
-    <ul class="cond-grid">
-      @for (c of visibleConditions(); track c.name) {
-        <li class="cond-card">
-          <p class="cond-spec">{{ c.spec }}</p>
-          <h3><a class="stretched" [routerLink]="c.link" [fragment]="c.fragment">{{ c.name }}</a></h3>
-          <p>{{ c.body }}</p>
-          @if (c.guide) {
-            <span class="cond-guide">Read the full guide <app-glyph name="right" /></span>
-          }
-        </li>
-      }
-    </ul>
-    @if (hiddenCount() > 0) {
-      <div class="more-row">
-        <button type="button" class="btn-v3 dark" (click)="showAll.set(true)">See more ({{ hiddenCount() }}) <app-glyph name="down" /></button>
-      </div>
-    }
+    <sp-carousel [items]="carouselItems()" label="Conditions we support" />
   </div>
 </section>
 

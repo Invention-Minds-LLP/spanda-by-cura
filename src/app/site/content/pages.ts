@@ -30,10 +30,10 @@ export const ABOUT = {
     { title: 'Families included', body: 'Caregivers are welcome to learn alongside the patient, so that practice and safety continue at home.' },
   ],
   photo: {
-    src: 'img/stock/assessment-consultation.jpg',
-    alt: 'A clinician listening to a patient’s chest with a stethoscope during a consultation',
-    width: 1600,
-    height: 1067,
+    src: 'img/m/assessment-stethoscope.jpg',
+    alt: 'A doctor listening to a patient’s chest with a stethoscope during an assessment',
+    width: 1800,
+    height: 1005,
   } as Photo,
 };
 
@@ -77,10 +77,10 @@ export const APPROACH = {
   caregivers:
     'Patients and caregivers are encouraged to discuss goals and practical needs with the care team. Appropriate home guidance and follow-up recommendations may form part of ongoing recovery.',
   photo: {
-    src: 'img/stock/clinical-assessment.jpg',
-    alt: 'A clinician measuring a patient’s blood pressure during an assessment',
-    width: 1600,
-    height: 1067,
+    src: 'img/m/leg-exercise.jpg',
+    alt: 'A physiotherapist guiding an older man through a leg exercise on a mat',
+    width: 1800,
+    height: 1200,
   } as Photo,
 };
 

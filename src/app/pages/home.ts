@@ -10,11 +10,13 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Glyph } from '../home/glyph';
-import { GUIDE_LINKS } from '../site/content/guides';
 import { FAQS, STAGES, VISIT } from '../home/home.content';
 import { SITE } from '../site.config';
 import { CallbackForm } from '../site/callback-form';
-import { SPECIALITIES_FULL, SPECIALITY_PAGES, SpecialityFull, slugify } from '../site/content/specialities';
+import { Carousel, CarouselItem } from '../site/carousel';
+import { GUIDES, guidePath } from '../site/content/guides';
+import { photoForGuide } from '../site/content/guides/photos';
+import { SPECIALITIES_FULL, SPECIALITY_PAGES, SpecialityFull } from '../site/content/specialities';
 import { Motion } from '../site/motion';
 import { Seo } from '../site/seo';
 import { Cta, Faq, PhotoFrame } from '../site/ui';
@@ -23,7 +25,7 @@ type Tab = 'all' | SpecialityFull['id'];
 
 @Component({
   selector: 'sp-home',
-  imports: [RouterLink, Glyph, CallbackForm, Faq, Cta, PhotoFrame],
+  imports: [RouterLink, Glyph, CallbackForm, Carousel, Faq, Cta, PhotoFrame],
   templateUrl: './home.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -35,25 +37,24 @@ export class HomePage {
   protected readonly visit = VISIT;
   protected readonly faqs = [...FAQS, ...SPECIALITIES_FULL.flatMap((s) => s.faqs)];
   protected readonly therapyPhoto = {
-    src: 'img/stock/resistance-band-exercise.jpg',
-    alt: 'A patient doing an ankle strengthening exercise with a resistance band',
-    width: 1280,
-    height: 1600,
+    src: 'img/m/band-exercise.jpg',
+    alt: 'A physiotherapist helping a senior man with a resistance band exercise',
+    width: 1800,
+    height: 1005,
   };
 
   protected readonly tab = signal<Tab>('all');
-  protected readonly showAll = signal(false);
 
-  private readonly all = SPECIALITIES_FULL.flatMap((s) =>
+  /** Every condition guide as a carousel card, filtered by the speciality tab. */
+  private readonly allItems: (CarouselItem & { specId: string })[] = SPECIALITIES_FULL.flatMap((s) =>
     s.conditions.map((c) => {
-      const slug = slugify(c.name);
-      const guide = GUIDE_LINKS[slug];
-      return { ...c, specId: s.id, spec: s.title, guide: !!guide, link: guide ?? '/rehabilitation/' + s.id, fragment: guide ? undefined : slug };
+      const g = GUIDES.find((x) => x.condition === c.name)!;
+      return { specId: s.id, name: c.name, body: c.body, spec: s.short, link: guidePath(g), photo: photoForGuide(g.slug, g.photo) };
     }),
   );
-  private readonly filtered = computed(() => (this.tab() === 'all' ? this.all : this.all.filter((c) => c.specId === this.tab())));
-  protected readonly visibleConditions = computed(() => (this.showAll() ? this.filtered() : this.filtered().slice(0, 6)));
-  protected readonly hiddenCount = computed(() => this.filtered().length - this.visibleConditions().length);
+  protected readonly carouselItems = computed(() =>
+    this.tab() === 'all' ? this.allItems : this.allItems.filter((c) => c.specId === this.tab()),
+  );
 
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly destroy = inject(DestroyRef);
@@ -73,7 +74,6 @@ export class HomePage {
 
   protected pickTab(t: Tab): void {
     this.tab.set(t);
-    this.showAll.set(false);
   }
 
   private async start(): Promise<void> {

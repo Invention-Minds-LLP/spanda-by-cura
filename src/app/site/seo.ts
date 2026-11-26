@@ -42,7 +42,7 @@ export class Seo {
 
   set(p: PageSeo): void {
     const url = this.abs(p.path === '/' ? '/' : p.path);
-    const image = this.abs(p.image ?? 'img/stock/therapist-guided-exercise.jpg');
+    const image = this.abs(p.image ?? 'img/m/hero-walking-therapist.jpg');
     this.title.setTitle(p.title);
     this.meta.updateTag({ name: 'description', content: p.description });
     this.meta.updateTag({ property: 'og:title', content: p.title });

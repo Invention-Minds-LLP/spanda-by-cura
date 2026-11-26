@@ -17,6 +17,12 @@ export const SITE = {
   whatsapp: '',
   /** Verified enquiry email. Empty until confirmed. */
   email: '',
+
+  /**
+   * Tracking (same stack as the agency's other healthcare sites). Leave empty until the client approves
+   * tracking and the privacy notice; nothing loads while empty. Consent Mode v2 defaults to "denied".
+   */
+  gtmId: '', // e.g. 'GTM-XXXXXXX' – GA4, Google Ads conversions, call tracking, Meta pixel are configured inside GTM.
 };
 
 export function whatsappLink(message: string): string {

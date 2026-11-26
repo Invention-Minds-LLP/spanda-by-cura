@@ -369,13 +369,23 @@ export class ContactPage {
           provider’s form service and are accessed only by staff handling enquiries.
         </p>
         <h2>Cookies and tracking</h2>
-        <p>This website does not currently use advertising or analytics cookies.</p>
+        @if (tracking) {
+          <p>
+            With your permission, we use Google Tag Manager, Google Analytics and advertising conversion tags to understand
+            how the website is used and to measure our advertising. You can choose “Only essential” in the cookie banner.
+            We never send your name, phone number or any health information to analytics or advertising services, and we do
+            not use your browsing for personalised advertising.
+          </p>
+        } @else {
+          <p>This website does not currently use advertising or analytics cookies.</p>
+        }
       </div>
     </section>
   `,
 })
 export class PrivacyPage {
   protected readonly updated = PRIVACY.updated;
+  protected readonly tracking = !!SITE.gtmId;
   protected readonly crumbs = [home, { label: 'Privacy', link: '/privacy' }];
   constructor() {
     const seo = inject(Seo);

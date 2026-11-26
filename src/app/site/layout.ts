@@ -13,6 +13,7 @@ import { Glyph } from '../home/glyph';
 import { GUIDE_LINKS } from './content/guides';
 import { SITE, whatsappLink } from '../site.config';
 import { SPECIALITIES_FULL, slugify } from './content/specialities';
+import { Tracking } from './tracking';
 
 /** Shared shell for every public page: announcement, header with mega menu, footer, floating actions. */
 @Component({
@@ -29,6 +30,7 @@ export class SiteLayout {
   protected readonly menuOpen = signal(false);
   protected readonly megaOpen = signal(false);
   protected readonly scrolled = signal(false);
+  protected readonly tracking = inject(Tracking);
 
   constructor() {
     const router = inject(Router);
@@ -40,6 +42,7 @@ export class SiteLayout {
     destroy.onDestroy(() => sub.unsubscribe());
 
     afterNextRender(() => {
+      this.tracking.start();
       const onScroll = () => this.scrolled.set(scrollY > 40);
       onScroll();
       addEventListener('scroll', onScroll, { passive: true });

@@ -33,7 +33,7 @@ export const SPECIALITIES_FULL: SpecialityFull[] = [
       "Patient education"
     ],
     "goals": "Support safer movement, manage functional limitations and work towards everyday activities.",
-    "image": "img/stock/knee-physiotherapy.jpg",
+    "image": "img/m/knee-examination.jpg",
     "conditions": [
       {
         "name": "Total knee replacement rehabilitation",
@@ -105,7 +105,7 @@ export const SPECIALITIES_FULL: SpecialityFull[] = [
       "Functional movement and activities-of-daily-living practice"
     ],
     "goals": "Support available functional abilities, mobility and participation in daily life. Progress varies by individual.",
-    "image": "img/stock/balance-training.jpg",
+    "image": "img/m/walker-gait-training.jpg",
     "conditions": [
       {
         "name": "Stroke rehabilitation",
@@ -178,7 +178,7 @@ export const SPECIALITIES_FULL: SpecialityFull[] = [
       "Respiratory self-management guidance"
     ],
     "goals": "Support breathlessness management, exercise tolerance and everyday function. Rehabilitation does not replace medical respiratory treatment.",
-    "image": "img/stock/breathing-exercise.jpg",
+    "image": "img/m/breathing-trainer.jpg",
     "conditions": [
       {
         "name": "COPD rehabilitation",
@@ -257,10 +257,10 @@ export const SPECIALITY_PAGES: Record<
 > = {
   orthopaedic: {
     photo: {
-      src: 'img/stock/knee-physiotherapy.jpg',
-      alt: 'A physiotherapist guiding a knee strengthening exercise with an ankle weight',
-      width: 1600,
-      height: 1067,
+      src: 'img/m/knee-examination.jpg',
+      alt: 'A physiotherapist examining an older woman’s knee in a clinic',
+      width: 1800,
+      height: 1005,
     },
     seoTitle: 'Orthopaedic Rehabilitation in Whitefield, Bengaluru | SPANDA',
     seoDescription:
@@ -273,10 +273,10 @@ export const SPECIALITY_PAGES: Record<
   },
   neurological: {
     photo: {
-      src: 'img/stock/balance-training.jpg',
-      alt: 'A person practising standing balance on a wobble board while a therapist stands close by',
-      width: 1280,
-      height: 1600,
+      src: 'img/m/walker-gait-training.jpg',
+      alt: 'A physiotherapist guiding a senior man walking with a frame in a rehabilitation gym',
+      width: 1800,
+      height: 1005,
     },
     seoTitle: 'Neurological Rehabilitation in Bengaluru (Whitefield) | SPANDA',
     seoDescription:
@@ -289,10 +289,10 @@ export const SPECIALITY_PAGES: Record<
   },
   pulmonary: {
     photo: {
-      src: 'img/stock/breathing-exercise.jpg',
-      alt: 'A man practising a seated breathing exercise with one hand on his chest and one on his abdomen',
-      width: 1600,
-      height: 1067,
+      src: 'img/m/breathing-trainer.jpg',
+      alt: 'A woman using a breathing exercise device with a healthcare professional beside her',
+      width: 1800,
+      height: 1200,
     },
     seoTitle: 'Pulmonary Rehabilitation in Whitefield, Bengaluru | SPANDA',
     seoDescription:

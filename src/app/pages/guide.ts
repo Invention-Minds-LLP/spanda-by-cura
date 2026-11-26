@@ -12,8 +12,9 @@ import {
 import { RouterLink } from '@angular/router';
 import { Glyph } from '../home/glyph';
 import { GUIDES, findGuide, guideBySlug, guidePath } from '../site/content/guides';
-import { GUIDE_PHOTOS } from '../site/content/guides/photos';
+import { photoForGuide } from '../site/content/guides/photos';
 import { getSpeciality } from '../site/content/specialities';
+import { CallbackForm } from '../site/callback-form';
 import { Motion } from '../site/motion';
 import { Seo } from '../site/seo';
 import { Crumbs, Cta, Faq, PhotoFrame } from '../site/ui';
@@ -21,7 +22,7 @@ import { Crumbs, Cta, Faq, PhotoFrame } from '../site/ui';
 /** One template for every condition guide: /rehabilitation/:spec/:slug. */
 @Component({
   selector: 'sp-guide',
-  imports: [RouterLink, Glyph, Crumbs, Cta, Faq, PhotoFrame],
+  imports: [RouterLink, Glyph, Crumbs, Cta, Faq, PhotoFrame, CallbackForm],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @let g = guide();
@@ -121,6 +122,16 @@ import { Crumbs, Cta, Faq, PhotoFrame } from '../site/ui';
             </div>
           </section>
 
+
+          <section class="quick-cb" aria-labelledby="qcb-h" data-rise>
+            <div>
+              <p class="kicker">Ask our team</p>
+              <h2 id="qcb-h">Request a callback about {{ g.condition.toLowerCase() }}</h2>
+              <p>Share your name and number, and our team will call you about assessment availability and suitability.</p>
+            </div>
+            <sp-callback-form [compact]="true" [topic]="g.condition" label="Call me back" />
+          </section>
+
           @if (g.checklist?.length) {
             <section id="practical-tips">
               <h2>{{ g.checklistHeading ?? 'Practical tips' }}</h2>
@@ -203,7 +214,7 @@ export class GuidePage {
   protected readonly path = computed(() => guidePath(this.guide()));
   protected readonly speciality = computed(() => getSpeciality(this.guide().spec)!);
   protected readonly specTitle = computed(() => this.speciality().title);
-  protected readonly photo = computed(() => GUIDE_PHOTOS[this.guide().photo] ?? GUIDE_PHOTOS['therapist']);
+  protected readonly photo = computed(() => photoForGuide(this.guide().slug, this.guide().photo));
   protected readonly crumbs = computed(() => [
     { label: 'Home', link: '/' },
     { label: 'Specialities', link: '/rehabilitation' },

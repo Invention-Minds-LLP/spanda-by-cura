@@ -919,3 +919,389 @@
     }
   }
 }
+
+/* ───────── Animated outer border ("glow card") ───────── */
+@property --glow-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes glow-spin {
+  to {
+    --glow-angle: 360deg;
+  }
+}
+
+.sp {
+  .glow-card,
+  .spec-card,
+  .team-card,
+  .prog-card,
+  .other-card,
+  .value-card {
+    position: relative;
+    isolation: isolate;
+  }
+  .glow-card::after,
+  .spec-card::after,
+  .team-card::after,
+  .prog-card::after,
+  .other-card::after,
+  .value-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    padding: 2px;
+    border-radius: inherit;
+    background: conic-gradient(
+      from var(--glow-angle),
+      transparent 0deg,
+      transparent 200deg,
+      rgb(190 139 88 / 0.9) 260deg,
+      rgb(143 160 138 / 0.95) 310deg,
+      transparent 360deg
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: glow-spin 5s linear infinite;
+    transition: opacity 400ms var(--ease-out);
+  }
+  .glow-card:hover::after,
+  .spec-card:hover::after,
+  .team-card:hover::after,
+  .prog-card:hover::after,
+  .other-card:hover::after,
+  .value-card:hover::after,
+  .cf-card.is-active::after {
+    opacity: 1;
+    animation-duration: 3s;
+  }
+  .value-card {
+    border-top: 0;
+  }
+
+  /* Home hero now uses a landscape photograph. */
+  .hero-photo {
+    aspect-ratio: 1.05;
+  }
+  .hero-photo img {
+    object-position: 58% 45%;
+  }
+
+  /* ───────── 3D cover-flow carousel ───────── */
+  .carousel {
+    display: block;
+    outline: none;
+  }
+  .cf-stage {
+    position: relative;
+    height: clamp(470px, 46vw, 540px);
+    perspective: 1400px;
+    perspective-origin: 50% 40%;
+    touch-action: pan-y;
+    user-select: none;
+    overflow: hidden;
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+  }
+  .cf-track {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+  }
+  .cf-card {
+    position: absolute;
+    left: 50%;
+    top: 12px;
+    width: min(380px, 78vw);
+    margin-left: calc(min(380px, 78vw) / -2);
+    border-radius: 24px;
+    background: var(--card);
+    box-shadow: 0 30px 60px -34px rgb(34 54 63 / 0.55);
+    overflow: hidden;
+    transition:
+      transform 800ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      opacity 500ms var(--ease-out),
+      filter 500ms var(--ease-out);
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+  .cf-card:not(.is-active) {
+    filter: saturate(0.75) brightness(0.96);
+    cursor: pointer;
+  }
+  .cf-card.is-far {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .cf-photo {
+    position: relative;
+    aspect-ratio: 1.45;
+    overflow: hidden;
+  }
+  .cf-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1200ms var(--ease-out);
+  }
+  .cf-card.is-active .cf-photo img {
+    transform: scale(1.05);
+  }
+  .cf-spec {
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.94);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--eucalyptus);
+  }
+  .cf-body {
+    padding: 20px 22px 22px;
+  }
+  .cf-body h3 {
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+  .cf-body h3 a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .cf-body p {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .cf-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent-ink);
+  }
+  .cf-more .glyph {
+    width: 1em;
+    height: 1em;
+  }
+  .cf-hit {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .cf-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 8px;
+  }
+  .cf-btn {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border: 1.5px solid rgb(43 68 81 / 0.2);
+    border-radius: 50%;
+    background: var(--card);
+    color: var(--slate);
+    cursor: pointer;
+    transition: background-color 220ms var(--ease-out), color 220ms var(--ease-out);
+  }
+  .cf-btn:hover {
+    background: var(--slate);
+    color: var(--white);
+  }
+  .cf-btn .glyph {
+    width: 1.2em;
+    height: 1.2em;
+  }
+  .cf-btn .flip {
+    rotate: 180deg;
+  }
+  .cf-count {
+    min-width: 64px;
+    text-align: center;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-soft);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp .glow-card::after,
+  .sp .spec-card::after,
+  .sp .team-card::after,
+  .sp .prog-card::after,
+  .sp .other-card::after,
+  .sp .value-card::after {
+    animation: none;
+  }
+  .sp .cf-card {
+    transition: opacity 200ms linear;
+  }
+}
+
+/* ───────── Conversion pieces (inline callback, mobile action bar, consent) ───────── */
+.sp {
+  .quick-cb {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: clamp(20px, 3vw, 40px);
+    align-items: center;
+    margin: clamp(40px, 5vw, 64px) 0;
+    padding: clamp(24px, 3vw, 40px);
+    border-radius: 26px;
+    background: var(--slate);
+    color: var(--white);
+  }
+  .quick-cb .kicker {
+    color: var(--bronze);
+  }
+  .quick-cb h2 {
+    font-size: clamp(24px, 2.2vw, 32px) !important;
+    line-height: 1.15;
+    margin-bottom: 10px !important;
+  }
+  .quick-cb p {
+    color: rgb(255 255 255 / 0.8) !important;
+    font-size: 0.98rem !important;
+  }
+  .quick-cb .field span {
+    color: var(--white);
+  }
+  .quick-cb .field input {
+    background: rgb(255 255 255 / 0.95);
+  }
+  .quick-cb .consent span,
+  .quick-cb .consent a {
+    color: rgb(255 255 255 / 0.8);
+  }
+  .quick-cb .sent {
+    color: var(--slate);
+  }
+  .quick-cb .sent p {
+    color: var(--ink-soft) !important;
+  }
+  .cb-form.compact .btn-v3 {
+    background: var(--bronze-deep);
+  }
+  .quick-cb .btn-v3.primary {
+    background: #b07a45;
+  }
+  .quick-cb .btn-v3.primary:hover {
+    background: var(--white);
+    color: var(--slate);
+  }
+
+  .action-bar {
+    display: none;
+  }
+
+  .consent-bar {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    z-index: 60;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px 24px;
+    max-width: 920px;
+    margin-inline: auto;
+    padding: 18px 22px;
+    border-radius: 20px;
+    background: var(--card);
+    box-shadow: 0 30px 70px -30px rgb(34 54 63 / 0.6);
+  }
+  .consent-bar p {
+    flex: 1 1 380px;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+  .consent-bar a {
+    color: var(--accent-ink);
+  }
+  .consent-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  @media (max-width: 899px) {
+    .quick-cb {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* On phones a fixed bar replaces the floating button. */
+  @media (max-width: 700px) {
+    .floaters {
+      display: none;
+    }
+    .action-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 45;
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+      background: rgb(250 246 239 / 0.96);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 -10px 30px -20px rgb(34 54 63 / 0.5);
+    }
+    .action-bar a {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 48px;
+      border-radius: 999px;
+      border: 1.5px solid rgb(43 68 81 / 0.2);
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--slate);
+      text-decoration: none;
+    }
+    .action-bar a.primary {
+      flex: 1.6;
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--white);
+    }
+    .action-bar .glyph {
+      width: 1.1em;
+      height: 1.1em;
+    }
+    .foot {
+      padding-bottom: 90px;
+    }
+    .consent-bar {
+      bottom: 80px;
+    }
+  }
+}
