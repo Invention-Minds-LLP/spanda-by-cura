@@ -10,8 +10,12 @@ export const routes: Routes = [
       { path: '', loadComponent: () => import('./pages/home').then((m) => m.HomePage) },
       { path: 'rehabilitation', loadComponent: () => import('./pages/specialities').then((m) => m.SpecialitiesPage) },
       {
-        path: 'rehabilitation/orthopaedic/knee-replacement',
-        loadComponent: () => import('./pages/knee-replacement').then((m) => m.KneeReplacementPage),
+        path: 'rehabilitation/:spec/:slug',
+        loadComponent: () => import('./pages/guide').then((m) => m.GuidePage),
+        canMatch: [
+          (_: unknown, segments: { path: string }[]) =>
+            ['orthopaedic', 'neurological', 'pulmonary'].includes(segments[1]?.path ?? ''),
+        ],
       },
       {
         path: 'rehabilitation/:slug',

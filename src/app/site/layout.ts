@@ -10,8 +10,9 @@ import {
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Glyph } from '../home/glyph';
+import { GUIDE_LINKS } from './content/guides';
 import { SITE, whatsappLink } from '../site.config';
-import { CONDITION_GUIDES, SPECIALITIES_FULL, slugify } from './content/specialities';
+import { SPECIALITIES_FULL, slugify } from './content/specialities';
 
 /** Shared shell for every public page: announcement, header with mega menu, footer, floating actions. */
 @Component({
@@ -74,6 +75,6 @@ export class SiteLayout {
   /** Link target for a condition: its own guide if one exists, otherwise its section on the speciality page. */
   protected conditionLink(specId: string, name: string): { link: string; fragment?: string } {
     const slug = slugify(name);
-    return CONDITION_GUIDES[slug] ? { link: CONDITION_GUIDES[slug] } : { link: '/rehabilitation/' + specId, fragment: slug };
+    return GUIDE_LINKS[slug] ? { link: GUIDE_LINKS[slug] } : { link: '/rehabilitation/' + specId, fragment: slug };
   }
 }

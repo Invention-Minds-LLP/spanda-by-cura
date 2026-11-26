@@ -1,4 +1,5 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
+import { GUIDES } from './site/content/guides';
 
 const prerender = (path: string): ServerRoute => ({ path, renderMode: RenderMode.Prerender });
 
@@ -6,7 +7,11 @@ const prerender = (path: string): ServerRoute => ({ path, renderMode: RenderMode
 export const serverRoutes: ServerRoute[] = [
   prerender(''),
   prerender('rehabilitation'),
-  prerender('rehabilitation/orthopaedic/knee-replacement'),
+  {
+    path: 'rehabilitation/:spec/:slug',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => GUIDES.map((g) => ({ spec: g.spec, slug: g.slug })),
+  },
   {
     path: 'rehabilitation/:slug',
     renderMode: RenderMode.Prerender,

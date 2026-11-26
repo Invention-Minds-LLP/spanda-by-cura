@@ -11,8 +11,8 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Glyph } from '../home/glyph';
+import { GUIDE_LINKS } from '../site/content/guides';
 import {
-  CONDITION_GUIDES,
   SPECIALITIES_FULL,
   SPECIALITY_PAGES,
   SpecialityFull,
@@ -147,7 +147,7 @@ export class SpecialityPage {
   protected readonly conditions = computed(() =>
     this.spec().conditions.map((c) => {
       const slug = slugify(c.name);
-      return { ...c, slug, guide: CONDITION_GUIDES[slug] };
+      return { ...c, slug, guide: GUIDE_LINKS[slug] };
     }),
   );
 

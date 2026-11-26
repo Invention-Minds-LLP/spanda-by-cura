@@ -305,9 +305,5 @@ export const SPECIALITY_PAGES: Record<
   },
 };
 
-/** Conditions that have their own detailed guide page. */
-export const CONDITION_GUIDES: Record<string, string> = {
-  'total-knee-replacement-rehabilitation': '/rehabilitation/orthopaedic/knee-replacement',
-};
 
 export const getSpeciality = (id: string) => SPECIALITIES_FULL.find((s) => s.id === id);

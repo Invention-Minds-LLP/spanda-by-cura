@@ -10,14 +10,14 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Glyph } from '../home/glyph';
+import { GUIDE_LINKS } from '../site/content/guides';
 import { FAQS, STAGES, VISIT } from '../home/home.content';
 import { SITE } from '../site.config';
 import { CallbackForm } from '../site/callback-form';
-import { CONDITION_GUIDES, SPECIALITIES_FULL, SPECIALITY_PAGES, SpecialityFull, slugify } from '../site/content/specialities';
+import { SPECIALITIES_FULL, SPECIALITY_PAGES, SpecialityFull, slugify } from '../site/content/specialities';
 import { Motion } from '../site/motion';
 import { Seo } from '../site/seo';
 import { Cta, Faq, PhotoFrame } from '../site/ui';
-import type { PulseImage } from '../v2/pulse-image';
 
 type Tab = 'all' | SpecialityFull['id'];
 
@@ -47,7 +47,7 @@ export class HomePage {
   private readonly all = SPECIALITIES_FULL.flatMap((s) =>
     s.conditions.map((c) => {
       const slug = slugify(c.name);
-      const guide = CONDITION_GUIDES[slug];
+      const guide = GUIDE_LINKS[slug];
       return { ...c, specId: s.id, spec: s.title, guide: !!guide, link: guide ?? '/rehabilitation/' + s.id, fragment: guide ? undefined : slug };
     }),
   );
@@ -58,7 +58,6 @@ export class HomePage {
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly destroy = inject(DestroyRef);
   private readonly motion = inject(Motion);
-  private pulse?: PulseImage;
 
   constructor() {
     const seo = inject(Seo);
@@ -69,7 +68,6 @@ export class HomePage {
       path: '/',
       jsonLd: [seo.faq(this.faqs)],
     });
-    this.destroy.onDestroy(() => this.pulse?.dispose());
     afterNextRender(() => this.start());
   }
 
@@ -91,35 +89,5 @@ export class HomePage {
       const o = { v: 0 };
       gsap.to(o, { v: to, duration: 1.6, ease: 'power2.out', delay: 0.5, onUpdate: () => (el.textContent = String(Math.round(o.v))) });
     });
-
-    // The hero photograph "breathes" through WebGL, with a soft pulse.
-    const frame = root.querySelector<HTMLElement>('[data-pulse]');
-    const probe = document.createElement('canvas');
-    if (!frame || !(probe.getContext('webgl2') || probe.getContext('webgl'))) return;
-    const img = frame.querySelector('img')!;
-    try {
-      await img.decode();
-    } catch {
-      return;
-    }
-    const { PulseImage } = await import('../v2/pulse-image');
-    const p = new PulseImage(frame.querySelector('canvas')!, img, (navigator.hardwareConcurrency ?? 8) <= 4, {
-      origin: [0.5, 0.45],
-      every: 4.5,
-      travel: 0.04,
-      focus: [0.5, 0.6],
-    });
-    const fit = () => p.resize(frame.clientWidth, frame.clientHeight);
-    fit();
-    const ro = new ResizeObserver(fit);
-    ro.observe(frame);
-    const io = new IntersectionObserver(([e]) => p.setVisible(e.isIntersecting));
-    io.observe(frame);
-    this.destroy.onDestroy(() => {
-      ro.disconnect();
-      io.disconnect();
-    });
-    frame.classList.add('is-gl');
-    this.pulse = p;
   }
 }
