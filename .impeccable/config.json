@@ -57,6 +57,42 @@
         ],
         "createdAt": "2026-11-26T08:20:55.671Z",
         "reason": "Claude: speciality images use Angular [src] binding to real files in public/img/stock; verified rendering in screenshots"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "fraunces variable",
+        "files": [
+          ".playwright-mcp/report/audit.html"
+        ],
+        "createdAt": "2026-11-28T08:19:12.684Z",
+        "reason": "shipped site stacks in src/site-styles/base.css (--serif) and src/styles.css (--body); DESIGN.md typography is stale"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "manrope variable",
+        "files": [
+          ".playwright-mcp/report/audit.html"
+        ],
+        "createdAt": "2026-11-28T08:19:13.007Z",
+        "reason": "shipped site stacks in src/site-styles/base.css (--serif) and src/styles.css (--body); DESIGN.md typography is stale"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "georgia",
+        "files": [
+          ".playwright-mcp/report/audit.html"
+        ],
+        "createdAt": "2026-11-28T08:19:13.357Z",
+        "reason": "shipped site stacks in src/site-styles/base.css (--serif) and src/styles.css (--body); DESIGN.md typography is stale"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "arial",
+        "files": [
+          ".playwright-mcp/report/audit.html"
+        ],
+        "createdAt": "2026-11-28T08:19:13.703Z",
+        "reason": "shipped site stacks in src/site-styles/base.css (--serif) and src/styles.css (--body); DESIGN.md typography is stale"
       }
     ]
   }

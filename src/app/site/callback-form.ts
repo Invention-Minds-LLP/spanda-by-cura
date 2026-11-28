@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { Tracking } from './tracking';
 import { Glyph } from '../home/glyph';
 import { SPECIALITIES_FULL } from './content/specialities';
+import { SITE } from '../site.config';
 
 /**
  * Enquiry form submitted to Netlify Forms (a static copy in src/index.html lets Netlify detect it).
@@ -67,7 +68,13 @@ import { SPECIALITIES_FULL } from './content/specialities';
           {{ sending() ? 'Sending…' : label() }} <app-glyph name="right" />
         </button>
         @if (error()) {
-          <p class="form-error" role="alert">Something went wrong. Please try again in a moment.</p>
+          <p class="form-error" role="alert">
+            Your request could not be sent, possibly because of a weak connection. Your details are still filled in, so
+            please press the button again.
+            @if (site.phoneHref) {
+              You can also call us on <a [href]="'tel:' + site.phoneHref">{{ site.phoneDisplay }}</a>.
+            }
+          </p>
         }
       </form>
     }
@@ -85,6 +92,7 @@ export class CallbackForm {
     return this.router.url.split('#')[0];
   }
   protected readonly specs = SPECIALITIES_FULL;
+  protected readonly site = SITE;
   protected readonly sending = signal(false);
   protected readonly sent = signal(false);
   protected readonly error = signal(false);

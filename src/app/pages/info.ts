@@ -284,23 +284,18 @@ export class PatientInfoPage {
           <div class="contact-card">
             <h2>{{ site.name }}</h2>
             <p class="contact-line"><app-glyph name="pin" /> {{ site.locality }}, {{ site.region }}</p>
-            <p class="contact-line">
-              <app-glyph name="phone" />
-              @if (site.phoneHref) {
-                <a [href]="'tel:' + site.phoneHref">{{ site.phoneDisplay }}</a>
-              } @else {
-                Telephone to be confirmed
-              }
-            </p>
-            <p class="contact-line">
-              <app-glyph name="mail" />
-              @if (site.email) {
-                <a [href]="'mailto:' + site.email">{{ site.email }}</a>
-              } @else {
-                Email to be confirmed
-              }
-            </p>
-            <p class="fine">The exact address, telephone, email, opening hours and WhatsApp number will be added after verification.</p>
+            @if (site.phoneHref) {
+              <p class="contact-line"><app-glyph name="phone" /> <a [href]="'tel:' + site.phoneHref">{{ site.phoneDisplay }}</a></p>
+            }
+            @if (site.email) {
+              <p class="contact-line"><app-glyph name="mail" /> <a [href]="'mailto:' + site.email">{{ site.email }}</a></p>
+            }
+            @if (!site.phoneHref || !site.email) {
+              <p class="fine">
+                Our phone and WhatsApp numbers, email, full address and opening hours will be added here shortly. Until then,
+                use the form and the team will call you.
+              </p>
+            }
           </div>
           <div class="warn-box compact" role="note">
             <h2>Urgent medical concerns</h2>

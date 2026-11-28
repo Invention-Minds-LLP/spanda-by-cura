@@ -52,8 +52,9 @@ export type GlyphName =
           <path d="M5.2 3.5h3.3l1.6 4.1-2.1 1.4a11.5 11.5 0 0 0 7 7l1.4-2.1 4.1 1.6v3.3a2 2 0 0 1-2.1 2A16.6 16.6 0 0 1 3.2 5.6a2 2 0 0 1 2-2.1z" />
         }
         @case ('chat') {
-          <path d="M20.2 11.6a8.2 8.2 0 0 1-12 7.2L3.8 20.2l1.4-4.2a8.2 8.2 0 1 1 15-4.4z" />
-          <path d="M9 10.2c.4 1.9 2 3.6 4.4 4.3" />
+          <!-- Square speech bubble with a question mark: deliberately unlike the round WhatsApp mark. -->
+          <path d="M6.5 3.5h11A2.5 2.5 0 0 1 20 6v8a2.5 2.5 0 0 1-2.5 2.5H11l-4.5 4v-4A2.5 2.5 0 0 1 4 14V6a2.5 2.5 0 0 1 2.5-2.5z" />
+          <path d="M9.9 8.4a2.2 2.2 0 1 1 3 2c-.6.3-.9.7-.9 1.3v.2M12 14.2v.01" />
         }
         @case ('up') {
           <path d="M12 19V5M6 11l6-6 6 6" />

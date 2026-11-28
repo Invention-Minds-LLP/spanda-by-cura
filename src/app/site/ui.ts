@@ -116,26 +116,18 @@ export class PhotoFrame {
         </div>
         <dl class="cta-contact">
           <div><dt><app-glyph name="pin" /> Visit us</dt><dd>{{ site.name }}, {{ site.locality }}, {{ site.region }}</dd></div>
-          <div>
-            <dt><app-glyph name="phone" /> Call us</dt>
-            <dd>
-              @if (site.phoneHref) {
-                <a [href]="'tel:' + site.phoneHref">{{ site.phoneDisplay }}</a>
-              } @else {
-                To be confirmed
-              }
-            </dd>
-          </div>
-          <div>
-            <dt><app-glyph name="mail" /> Email us</dt>
-            <dd>
-              @if (site.email) {
-                <a [href]="'mailto:' + site.email">{{ site.email }}</a>
-              } @else {
-                To be confirmed
-              }
-            </dd>
-          </div>
+          @if (site.phoneHref) {
+            <div><dt><app-glyph name="phone" /> Call us</dt><dd><a [href]="'tel:' + site.phoneHref">{{ site.phoneDisplay }}</a></dd></div>
+          }
+          @if (site.email) {
+            <div><dt><app-glyph name="mail" /> Email us</dt><dd><a [href]="'mailto:' + site.email">{{ site.email }}</a></dd></div>
+          }
+          @if (!site.phoneHref && !site.email) {
+            <div>
+              <dt><app-glyph name="phone" /> Phone and WhatsApp</dt>
+              <dd>Our numbers will be added here shortly. Until then, request a callback and the team will call you.</dd>
+            </div>
+          }
         </dl>
       </div>
     </section>
